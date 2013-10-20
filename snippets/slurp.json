@@ -1,0 +1,6 @@
+{
+  "content": "my \\$${1:var};\n{ local \\$/ = undef; local *FILE; open FILE, \"<${2:file}\"; \\$$1 = <FILE>; close FILE }\n",
+  "name": "Read File",
+  "scope": "source.perl",
+  "tabTrigger": "slurp"
+}

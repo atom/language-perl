@@ -1,0 +1,12 @@
+{
+  "beforeRunningCommand": "saveActiveFile",
+  "captureFormatString": "$1 $3",
+  "capturePattern": "^(.*)line (\\d+)(.*)$",
+  "command": ". \"${TM_SUPPORT_PATH}/lib/html.sh\"\ncd \"${TM_DIRECTORY}\"\nout=`\"${TM_BUNDLE_SUPPORT}/perlcheckmate.pl\" \"${TM_FILEPATH}\"`\nif [[ $out ]]\n  then htmlHeader \"Perl syntax errors for ${TM_FILENAME}\";\n       exit_show_html \"$out\";\n       htmlFooter\n  else exit_show_tool_tip \"No errors!\"\nfi",
+  "input": "document",
+  "keyEquivalent": "^V",
+  "lineCaptureRegister": "2",
+  "name": "Validate Syntax",
+  "output": "discard",
+  "scope": "source.perl"
+}

@@ -1,0 +1,9 @@
+{
+  "beforeRunningCommand": "saveActiveFile",
+  "command": "open -a Affrus \"$TM_FILEPATH\"",
+  "input": "none",
+  "keyEquivalent": "^@p",
+  "name": "Send to Affrus",
+  "output": "discard",
+  "scope": "source.perl"
+}

@@ -1,0 +1,15 @@
+{
+  "beforeRunningCommand": "nop",
+  "command": "#!/usr/bin/env bash\n[[ -f \"${TM_SUPPORT_PATH}/lib/bash_init.sh\" ]] && . \"${TM_SUPPORT_PATH}/lib/bash_init.sh\"\n\nword=${TM_SELECTED_TEXT:-$TM_CURRENT_WORD}\n(perldoc -u \"$word\" 2>/dev/null || perldoc -u -f \"$word\" 2>/dev/null) | pod2html --q --title \"Perl Documentation - $word\" 2>/dev/null | sed -E 's|<a href=\"#(item_)?([^\"]+)\">|<a href=\"http://perldoc.perl.org/search.html?q=\\2\">|g'\nif [[ -e \"${TM_DIRECTORY}/pod2htmd.tmp\" ]]\n  then unlink \"${TM_DIRECTORY}/pod2htmd.tmp\"\nfi\nif [[ -e \"${TM_DIRECTORY}/pod2htmi.tmp\" ]]\n  then unlink \"${TM_DIRECTORY}/pod2htmi.tmp\"\nfi",
+  "fallbackInput": "word",
+  "input": "selection",
+  "inputFormat": "text",
+  "keyEquivalent": "^h",
+  "name": "Documentation for Word / Selection",
+  "outputCaret": "afterOutput",
+  "outputFormat": "html",
+  "outputLocation": "newWindow",
+  "scope": "source.perl",
+  "semanticClass": "lookup.define.perl",
+  "version": 2
+}

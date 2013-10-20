@@ -1,0 +1,6 @@
+{
+  "content": "foreach ${1:my \\$${2:x}} (@${3:array}) {\n\t${4:# body...}\n}\n",
+  "name": "Foreach Loop",
+  "scope": "source.perl",
+  "tabTrigger": "fore"
+}

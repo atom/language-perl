@@ -1,0 +1,6 @@
+{
+  "content": "package ${1:ClassName};\n\n${2:use base qw(${3:ParentClass});\n\n}sub new {\n\tmy \\$class = shift;\n\t\\$class = ref \\$class if ref \\$class;\n\tmy \\$self = bless {}, \\$class;\n\t\\$self;\n}\n\n1;\n",
+  "name": "Package",
+  "scope": "source.perl",
+  "tabTrigger": "class"
+}

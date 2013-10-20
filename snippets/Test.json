@@ -1,0 +1,6 @@
+{
+  "content": "#!/usr/bin/perl -w\n\nuse strict;\nuse Test::More tests => ${1:1};\nuse ${2:ModuleName};\n\nok(${3:assertion});\n",
+  "name": "Test",
+  "scope": "source.perl",
+  "tabTrigger": "test"
+}

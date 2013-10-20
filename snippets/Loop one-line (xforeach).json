@@ -1,0 +1,6 @@
+{
+  "content": "${1:expression} foreach @${2:array};\n",
+  "name": "Foreach –  One Line",
+  "scope": "source.perl",
+  "tabTrigger": "xfore"
+}

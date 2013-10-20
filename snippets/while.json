@@ -1,0 +1,6 @@
+{
+  "content": "while ($1) {\n\t${2:# body...}\n}\n",
+  "name": "While",
+  "scope": "source.perl",
+  "tabTrigger": "while"
+}

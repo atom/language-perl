@@ -1,0 +1,9 @@
+{
+  "name": "Indentation",
+  "scope": "source.perl",
+  "settings": {
+    "decreaseIndentPattern": "^\\s*\\}",
+    "increaseIndentPattern": "^.*\\{\\}?\\s*$",
+    "unIndentedLinePattern": "^\\s*$"
+  }
+}

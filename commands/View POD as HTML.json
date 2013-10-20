@@ -1,0 +1,9 @@
+{
+  "beforeRunningCommand": "nop",
+  "command": "pod2html 2>/dev/null && rm -f pod2htmd.tmp pod2htmi.tmp",
+  "input": "document",
+  "keyEquivalent": "^@p",
+  "name": "View POD as HTML",
+  "output": "showAsHTML",
+  "scope": "source.perl"
+}

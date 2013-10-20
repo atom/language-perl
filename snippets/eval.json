@@ -1,0 +1,6 @@
+{
+  "content": "eval {\n\t${1:# do something risky...}\n};\nif (\\$@) {\n\t${2:# handle failure...}\n}\n",
+  "name": "Try/Except",
+  "scope": "source.perl",
+  "tabTrigger": "eval"
+}

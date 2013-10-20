@@ -1,0 +1,23 @@
+{
+  "beforeRunningCommand": "nop",
+  "command": "#!/usr/bin/env bash\n\n${TM_PERLTIDY:-perltidy} -st -q\n",
+  "input": "selection",
+  "inputFormat": "text",
+  "keyEquivalent": "^H",
+  "name": "Tidy",
+  "outputCaret": "heuristic",
+  "outputFormat": "text",
+  "outputLocation": "replaceInput",
+  "requiredCommands": [
+    {
+      "command": "perltidy",
+      "locations": [
+        "/opt/local/bin/perltidy",
+        "/usr/local/bin/perltidy"
+      ],
+      "variable": "TM_PERLTIDY"
+    }
+  ],
+  "scope": "source.perl",
+  "version": 2
+}

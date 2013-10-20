@@ -1,0 +1,6 @@
+{
+  "content": "${1:expression} if ${2:condition};\n",
+  "name": "If – One Line",
+  "scope": "source.perl",
+  "tabTrigger": "xif"
+}

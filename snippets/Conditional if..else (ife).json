@@ -1,0 +1,6 @@
+{
+  "content": "if ($1) {\n\t${2:# body...}\n} else {\n\t${3:# else...}\n}\n",
+  "name": "If.…else",
+  "scope": "source.perl",
+  "tabTrigger": "ife"
+}

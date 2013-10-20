@@ -1,0 +1,6 @@
+{
+  "content": "sub ${1:function_name} {\n\t${2:# body...}\n}\n",
+  "name": "Function",
+  "scope": "source.perl",
+  "tabTrigger": "sub"
+}

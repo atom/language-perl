@@ -1,0 +1,6 @@
+{
+  "content": "${1:expression} while ${2:condition};\n",
+  "name": "While – One LIne",
+  "scope": "source.perl",
+  "tabTrigger": "xwhile"
+}

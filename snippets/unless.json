@@ -1,0 +1,6 @@
+{
+  "content": "unless ($1) {\n\t${2:# body...}\n}\n",
+  "name": "Unless",
+  "scope": "source.perl",
+  "tabTrigger": "unless"
+}
