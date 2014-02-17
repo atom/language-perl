@@ -1,5 +1,5 @@
 {
-  "source.perl": {
+  ".source.perl": {
     "editor": {
       "increaseIndentPattern": "^.*\\{\\}?\\s*$",
       "decreaseIndentPattern": "^\\s*\\}"
