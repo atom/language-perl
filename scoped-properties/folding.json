@@ -1,0 +1,7 @@
+{
+  "source.perl": {
+    "editor": {
+      "foldEndPattern": "(\\*/|^\\s*(\\}|\\]|\\)))"
+    }
+  }
+}

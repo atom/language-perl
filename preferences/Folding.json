@@ -1,8 +1,0 @@
-{
-  "name": "Folding",
-  "scope": "source.perl",
-  "settings": {
-    "foldingStartMarker": "(/\\*|(\\{|\\[|\\()\\s*$)",
-    "foldingStopMarker": "(\\*/|^\\s*(\\}|\\]|\\)))"
-  }
-}
