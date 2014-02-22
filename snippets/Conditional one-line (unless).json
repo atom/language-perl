@@ -1,6 +1,0 @@
-{
-  "content": "${1:expression} unless ${2:condition};\n",
-  "name": "Unless – One Line",
-  "scope": "source.perl",
-  "tabTrigger": "xunless"
-}

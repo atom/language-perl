@@ -1,6 +1,0 @@
-{
-  "content": "#!/usr/bin/env perl\n",
-  "name": "#!/usr/bin/env perl",
-  "scope": "L:dyn.caret.begin.document",
-  "tabTrigger": "pl"
-}
