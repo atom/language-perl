@@ -167,7 +167,7 @@
     'applyEndPatternLast': 1
     'begin': '\\b(?=(?<!\\&)(s)(\\s+\\S|\\s*[;\\,\\#\\{\\}\\(\\)\\[<]|$))'
     'comment': 'string.regexp.replace.perl'
-    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)\\]>]|$))'
+    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\}\\)\\]>]|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
