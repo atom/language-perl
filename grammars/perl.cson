@@ -5,6 +5,7 @@
   'pod'
   't'
   'PL'
+  'psgi'
 ]
 'firstLineMatch': '^#!.*\\bperl\\b'
 'name': 'Perl'
