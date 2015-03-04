@@ -1,4 +1,4 @@
-# Perl language support in Atom
+# Perl language support in Atom [![Build Status](https://travis-ci.org/atom/language-perl.svg?branch=master)](https://travis-ci.org/atom/language-perl)
 
 Adds syntax highlighting and snippets to Perl files in Atom.
 
