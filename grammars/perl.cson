@@ -361,9 +361,9 @@
     ]
   }
   {
-    'begin': '\\b(?=s([^\\s\\w\\[({<]).*\\1([egimosxradlu]*)([\\}\\)\\;\\,]|\\s+))'
+    'begin': '\\b(?=s([^\\s\\w\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
     'comment': 'string.regexp.replaceXXX'
-    'end': '((([egimosxradlu]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
+    'end': '((([egimosxradlupc]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
