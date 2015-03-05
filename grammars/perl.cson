@@ -1181,7 +1181,7 @@
     ]
   }
   {
-    'begin': '\\bqw?\\s*([^\\(\\{\\[\\<\\w\\s])'
+    'begin': '\\bqw?\\s*([^\\(\\{\\[\\<\\w\\s;])'
     'beginCaptures':
       '0':
         'name': 'punctuation.definition.string.begin.perl'
