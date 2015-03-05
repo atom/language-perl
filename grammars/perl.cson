@@ -28,7 +28,7 @@
     'applyEndPatternLast': 1
     'begin': '\\b(?=qr\\s*[^\\s\\w])'
     'comment': 'string.regexp.compile.perl'
-    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
+    'end': '((([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.compile.perl'
@@ -168,7 +168,7 @@
     'applyEndPatternLast': 1
     'begin': '\\b(?=(?<!\\&)(s)(\\s+\\S|\\s*[;\\,\\#\\{\\}\\(\\)\\[<]|$))'
     'comment': 'string.regexp.replace.perl'
-    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\}\\)\\]>]|$))'
+    'end': '((([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\}\\)\\]>]|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
@@ -422,7 +422,7 @@
   {
     'begin': '\\b(?=(?<!\\\\)s\\s*([^\\s\\w\\[({<>]))'
     'comment': 'string.regexp.replace.extended'
-    'end': '\\2((([egimosradlu]*x[egimosradlu]*)))\\b'
+    'end': '\\2((([egimosradlupc]*x[egimosradlupc]*)))\\b'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
@@ -451,7 +451,7 @@
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
-        'end': '\'(?=[egimosradlu]*x[egimosradlu]*)\\b'
+        'end': '\'(?=[egimosradlupc]*x[egimosradlupc]*)\\b'
         'name': 'string.regexp.replace.extended.simple_delimiter.perl'
         'patterns': [
           {
@@ -464,7 +464,7 @@
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
-        'end': '\\1(?=[egimosradlu]*x[egimosradlu]*)\\b'
+        'end': '\\1(?=[egimosradlupc]*x[egimosradlupc]*)\\b'
         'name': 'string.regexp.replace.extended.simple_delimiter.perl'
         'patterns': [
           {
