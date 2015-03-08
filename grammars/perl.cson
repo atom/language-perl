@@ -361,7 +361,7 @@
     ]
   }
   {
-    'begin': '\\b(?=s([^\\s\\w\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
+    'begin': '\\b(?=s([^\\sa-zA-Z0-9\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
     'comment': 'string.regexp.replaceXXX'
     'end': '((([egimosxradlupc]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
     'endCaptures':
@@ -373,7 +373,7 @@
         'name': 'keyword.control.regexp-option.perl'
     'patterns': [
       {
-        'begin': '(s\\s*)([^\\s\\w\\[({<])'
+        'begin': '(s\\s*)([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -402,7 +402,7 @@
         ]
       }
       {
-        'begin': '([^\\s\\w\\[({<])'
+        'begin': '([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
