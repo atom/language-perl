@@ -22,18 +22,37 @@ describe "perl grammar", ->
     expect(tokens[5]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
 
     {tokens} = grammar.tokenizeLine('s_text_test_')
-    expect(tokens[0]).toEqual value: "s", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[1]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl"], bufferDelta: 4, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 4
-    expect(tokens[3]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[4]).toEqual value: "test", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl"], bufferDelta: 4, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 4
-    expect(tokens[5]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
+    expect(tokens[0]).toEqual value: "s", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"]
+    expect(tokens[1]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"]
+    expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl"]
+    expect(tokens[3]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+    expect(tokens[4]).toEqual value: "test", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl"]
+    expect(tokens[5]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
 
     {tokens} = grammar.tokenizeLine('s/text/test/gxr')
-    expect(tokens[0]).toEqual value: "s", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[1]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl"], bufferDelta: 4, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 4
-    expect(tokens[3]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[4]).toEqual value: "test", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl"], bufferDelta: 4, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 4
-    expect(tokens[5]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"], bufferDelta: 1, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 1
-    expect(tokens[6]).toEqual value: "gxr", scopes: ["source.perl", "string.regexp.replace.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"], bufferDelta: 3, hasPairedCharacter: false, isAtomic: undefined, isHardTab: undefined, isSoftWrapIndentation: undefined, screenDelta: 3
+    expect(tokens[0]).toEqual value: "s", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"]
+    expect(tokens[1]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"]
+    expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl"]
+    expect(tokens[3]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+    expect(tokens[4]).toEqual value: "test", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl"]
+    expect(tokens[5]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+    expect(tokens[6]).toEqual value: "gxr", scopes: ["source.perl", "string.regexp.replace.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+
+  it "tokenizes constant variables", ->
+    {tokens} = grammar.tokenizeLine('__FILE__')
+    expect(tokens[0]).toEqual value: "__FILE__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine('__LINE__')
+    expect(tokens[0]).toEqual value: "__LINE__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine('__PACKAGE__')
+    expect(tokens[0]).toEqual value: "__PACKAGE__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine('__SUB__')
+    expect(tokens[0]).toEqual value: "__SUB__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine('__END__')
+    expect(tokens[0]).toEqual value: "__END__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine('__DATA__')
+    expect(tokens[0]).toEqual value: "__DATA__", scopes: ["source.perl", "constant.language.perl"]
