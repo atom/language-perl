@@ -549,7 +549,7 @@
         'name': 'punctuation.definition.parameters.perl'
       '3':
         'name': 'variable.parameter.function.perl'
-    'match': '^\\s*(BEGIN|END|DESTROY)\\b'
+    'match': '^\\s*(BEGIN|UNITCHECK|CHECK|INIT|END|DESTROY)\\b'
     'name': 'meta.function.perl'
   }
   {

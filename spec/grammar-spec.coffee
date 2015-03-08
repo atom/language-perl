@@ -56,3 +56,25 @@ describe "perl grammar", ->
 
     {tokens} = grammar.tokenizeLine("__DATA__")
     expect(tokens[0]).toEqual value: "__DATA__", scopes: ["source.perl", "constant.language.perl"]
+
+    {tokens} = grammar.tokenizeLine("__TEST__")
+    expect(tokens[0]).toEqual value: "__TEST__", scopes: ["source.perl", "string.unquoted.program-block.perl", "punctuation.definition.string.begin.perl"]
+
+  it "tokenizes meta functions", ->
+    {tokens} = grammar.tokenizeLine("BEGIN")
+    expect(tokens[0]).toEqual value: "BEGIN", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+
+    {tokens} = grammar.tokenizeLine("UNITCHECK")
+    expect(tokens[0]).toEqual value: "UNITCHECK", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+
+    {tokens} = grammar.tokenizeLine("CHECK")
+    expect(tokens[0]).toEqual value: "CHECK", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+
+    {tokens} = grammar.tokenizeLine("INIT")
+    expect(tokens[0]).toEqual value: "INIT", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+
+    {tokens} = grammar.tokenizeLine("END")
+    expect(tokens[0]).toEqual value: "END", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+
+    {tokens} = grammar.tokenizeLine("DESTROY")
+    expect(tokens[0]).toEqual value: "DESTROY", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
