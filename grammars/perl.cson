@@ -1516,9 +1516,9 @@
   {
     'match': '\\b(x)\\s*(\\d+)\\b'
     'captures':
-      '0':
-        'name': 'support.function.perl'
       '1':
+        'name': 'support.function.perl'
+      '2':
         'name': 'entity.name.function.perl'
   }
   {
