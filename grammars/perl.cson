@@ -361,7 +361,7 @@
     ]
   }
   {
-    'begin': '\\b(?=s([^\\s\\w\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
+    'begin': '\\b(?=s([^\\sa-zA-Z0-9\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
     'comment': 'string.regexp.replaceXXX'
     'end': '((([egimosxradlupc]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
     'endCaptures':
@@ -373,7 +373,7 @@
         'name': 'keyword.control.regexp-option.perl'
     'patterns': [
       {
-        'begin': '(s\\s*)([^\\s\\w\\[({<])'
+        'begin': '(s\\s*)([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -402,7 +402,7 @@
         ]
       }
       {
-        'begin': '([^\\s\\w\\[({<])'
+        'begin': '([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -549,7 +549,7 @@
         'name': 'punctuation.definition.parameters.perl'
       '3':
         'name': 'variable.parameter.function.perl'
-    'match': '^\\s*(BEGIN|END|DESTROY)\\b'
+    'match': '^\\s*(BEGIN|UNITCHECK|CHECK|INIT|END|DESTROY)\\b'
     'name': 'meta.function.perl'
   }
   {
@@ -680,7 +680,7 @@
     'name': 'string.regexp.replace.perl'
   }
   {
-    'match': '\\b(__FILE__|__LINE__|__PACKAGE__)\\b'
+    'match': '\\b(__FILE__|__LINE__|__PACKAGE__|__SUB__|__DATA__|__END__)\\b'
     'name': 'constant.language.perl'
   }
   {
