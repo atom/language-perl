@@ -169,3 +169,29 @@ describe "perl grammar", ->
       expect(tokens[1]).toEqual value: "Aword Bword Cword", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
       expect(tokens[2]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
+
+  describe "tokenizes subroutines", ->
+    it "default subroutine", ->
+      lines = grammar.tokenizeLines("""sub mySub {
+          print "asd";
+      }""")
+      expect(lines[0][0]).toEqual value: "sub", scopes: ["source.perl", "meta.function.perl", "storage.type.sub.perl"]
+      expect(lines[0][2]).toEqual value: "mySub", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
+      expect(lines[0][4]).toEqual value: "{", scopes: ["source.perl"]
+      expect(lines[2][0]).toEqual value: "}", scopes: ["source.perl"]
+
+    it "subroutine as variable", ->
+      lines = grammar.tokenizeLines("""my $test = sub {
+          print "asd";
+      };""")
+      expect(lines[0][5]).toEqual value: "sub", scopes: ["source.perl", "meta.function.perl", "storage.type.sub.perl"]
+      expect(lines[0][7]).toEqual value: "{", scopes: ["source.perl"]
+      expect(lines[2][0]).toEqual value: "};", scopes: ["source.perl"]
+
+    it "subroutine as variable in hash", ->
+      lines = grammar.tokenizeLines("""my $test = { a => sub {
+          print "asd";
+      }};""")
+      expect(lines[0][7]).toEqual value: "sub", scopes: ["source.perl", "meta.function.perl", "storage.type.sub.perl"]
+      expect(lines[0][9]).toEqual value: "{", scopes: ["source.perl"]
+      expect(lines[2][0]).toEqual value: "}};", scopes: ["source.perl"]
