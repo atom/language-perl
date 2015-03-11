@@ -162,7 +162,7 @@ describe "perl grammar", ->
       expect(lines[4][0]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.end.perl"]
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
 
-  describe "tokenizes single quoting", ->
+  describe "tokenizes word quoting", ->
     it "qw(word)", ->
       {tokens} = grammar.tokenizeLine("qw(Aword Bword Cword);")
       expect(tokens[0]).toEqual value: "qw(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
