@@ -28,7 +28,7 @@
     'applyEndPatternLast': 1
     'begin': '\\b(?=qr\\s*[^\\s\\w])'
     'comment': 'string.regexp.compile.perl'
-    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
+    'end': '((([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.compile.perl'
@@ -168,7 +168,7 @@
     'applyEndPatternLast': 1
     'begin': '\\b(?=(?<!\\&)(s)(\\s+\\S|\\s*[;\\,\\#\\{\\}\\(\\)\\[<]|$))'
     'comment': 'string.regexp.replace.perl'
-    'end': '((([egimosxradlu]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\}\\)\\]>]|$))'
+    'end': '((([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\}\\)\\]>]|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
@@ -361,9 +361,9 @@
     ]
   }
   {
-    'begin': '\\b(?=s([^\\s\\w\\[({<]).*\\1([egimosradlu]*)([\\}\\)\\;\\,]|\\s+))'
+    'begin': '\\b(?=s([^\\sa-zA-Z0-9\\[({<]).*\\1([egimosxradlupc]*)([\\}\\)\\;\\,]|\\s+))'
     'comment': 'string.regexp.replaceXXX'
-    'end': '((([egimosradlu]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
+    'end': '((([egimosxradlupc]*)))(?=([\\}\\)\\;\\,]|\\s+|$))'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
@@ -373,7 +373,7 @@
         'name': 'keyword.control.regexp-option.perl'
     'patterns': [
       {
-        'begin': '(s\\s*)([^\\s\\w\\[({<])'
+        'begin': '(s\\s*)([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -402,7 +402,7 @@
         ]
       }
       {
-        'begin': '([^\\s\\w\\[({<])'
+        'begin': '([^\\sa-zA-Z0-9\\[({<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -422,7 +422,7 @@
   {
     'begin': '\\b(?=(?<!\\\\)s\\s*([^\\s\\w\\[({<>]))'
     'comment': 'string.regexp.replace.extended'
-    'end': '\\2((([egimosradlu]*x[egimosradlu]*)))\\b'
+    'end': '\\2((([egimosradlupc]*x[egimosradlupc]*)))\\b'
     'endCaptures':
       '1':
         'name': 'string.regexp.replace.perl'
@@ -451,7 +451,7 @@
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
-        'end': '\'(?=[egimosradlu]*x[egimosradlu]*)\\b'
+        'end': '\'(?=[egimosradlupc]*x[egimosradlupc]*)\\b'
         'name': 'string.regexp.replace.extended.simple_delimiter.perl'
         'patterns': [
           {
@@ -464,7 +464,7 @@
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
-        'end': '\\1(?=[egimosradlu]*x[egimosradlu]*)\\b'
+        'end': '\\1(?=[egimosradlupc]*x[egimosradlupc]*)\\b'
         'name': 'string.regexp.replace.extended.simple_delimiter.perl'
         'patterns': [
           {
@@ -538,7 +538,7 @@
         'name': 'entity.name.function.perl'
       '3':
         'name': 'storage.type.method.perl'
-    'match': '^\\s*(sub)\\s+([-a-zA-Z0-9_]+)\\s*(\\([\\$\\@\\*;]*\\))?'
+    'match': '\\b(sub)(?:\\s+([-a-zA-Z0-9_]+))?\\s*(?:\\([\\$\\@\\*;]*\\))?[^\\w\\{]'
     'name': 'meta.function.perl'
   }
   {
@@ -549,7 +549,7 @@
         'name': 'punctuation.definition.parameters.perl'
       '3':
         'name': 'variable.parameter.function.perl'
-    'match': '^\\s*(BEGIN|END|DESTROY)\\b'
+    'match': '^\\s*(BEGIN|UNITCHECK|CHECK|INIT|END|DESTROY)\\b'
     'name': 'meta.function.perl'
   }
   {
@@ -680,7 +680,7 @@
     'name': 'string.regexp.replace.perl'
   }
   {
-    'match': '\\b(__FILE__|__LINE__|__PACKAGE__)\\b'
+    'match': '\\b(__FILE__|__LINE__|__PACKAGE__|__SUB__|__DATA__|__END__)\\b'
     'name': 'constant.language.perl'
   }
   {
@@ -696,7 +696,7 @@
     'name': 'keyword.operator.filetest.perl'
   }
   {
-    'match': '\\b(and|or|xor|as)\\b'
+    'match': '\\b(and|or|xor|as|not)\\b'
     'name': 'keyword.operator.logical.perl'
   }
   {
@@ -1181,7 +1181,7 @@
     ]
   }
   {
-    'begin': '\\bqw?\\s*([^\\(\\{\\[\\<\\w\\s])'
+    'begin': '(?<!->)\\bqw?\\s*([^\\(\\{\\[\\<\\w\\s])'
     'beginCaptures':
       '0':
         'name': 'punctuation.definition.string.begin.perl'
@@ -1233,7 +1233,7 @@
     ]
   }
   {
-    'begin': '\\bqq\\s*\\('
+    'begin': '(?<!->)\\bqq\\s*\\('
     'beginCaptures':
       '0':
         'name': 'punctuation.definition.string.begin.perl'
@@ -1321,7 +1321,7 @@
     ]
   }
   {
-    'begin': '\\bqx\\s*\\('
+    'begin': '(?<!->)\\bqx\\s*\\('
     'beginCaptures':
       '0':
         'name': 'punctuation.definition.string.begin.perl'
@@ -1409,7 +1409,7 @@
     ]
   }
   {
-    'begin': '\\bqw?\\s*\\('
+    'begin': '(?<!->)\\bqw?\\s*\\('
     'beginCaptures':
       '0':
         'name': 'punctuation.definition.string.begin.perl'
@@ -1496,7 +1496,7 @@
     'name': 'string.unquoted.program-block.perl'
   }
   {
-    'begin': '\\b(format)\\s+([A-Za-z]+)\\s*='
+    'begin': '\\b(format)\\s+(\\w+)\\s*='
     'beginCaptures':
       '1':
         'name': 'support.function.perl'
@@ -1514,7 +1514,15 @@
     ]
   }
   {
-    'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|cmp|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eq|eval|exec|exists|exp|fcntl|fileno|flock|fork|format|formline|ge|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|gt|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|le|length|link|listen|local|localtime|log|lstat|lt|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|ne|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|q|qq|quotemeta|qw|qx|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y|q|qw|qq|qx)\\b'
+    'match': '\\b(x)\\s*(\\d+)\\b'
+    'captures':
+      '1':
+        'name': 'support.function.perl'
+      '2':
+        'name': 'entity.name.function.perl'
+  }
+  {
+    'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|cmp|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eq|eval|exec|exists|exp|fcntl|fileno|flock|fork|formline|ge|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|gt|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|le|length|link|listen|local|localtime|log|lstat|lt|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|ne|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|quotemeta|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y)\\b'
     'name': 'support.function.perl'
   }
 ]
