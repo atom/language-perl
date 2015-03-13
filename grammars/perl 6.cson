@@ -1,10 +1,7 @@
 fileTypes: [
   "p6"
-  "pl"
   "pl6"
-  "pm"
   "pm6"
-  "t"
   "nqp"
 ]
 firstLineMatch: "(^#!.*\\bperl6\\b)|use\\s+v6"
