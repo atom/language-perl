@@ -123,44 +123,63 @@ describe "perl grammar", ->
 
   describe "tokenizes single quoting", ->
     it "q(text)", ->
-      {tokens} = grammar.tokenizeLine("q(Test this simple one);")
+      {tokens} = grammar.tokenizeLine("q(Test this\\nsimple one);")
       expect(tokens[0]).toEqual value: "q(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
-      expect(tokens[1]).toEqual value: "Test this simple one", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
+      expect(tokens[1]).toEqual value: "Test this\\nsimple one", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
       expect(tokens[2]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
 
     it "q~text~", ->
-      {tokens} = grammar.tokenizeLine("q~Test this advanced one~;")
+      {tokens} = grammar.tokenizeLine("q~Test this\\nadvanced one~;")
       expect(tokens[0]).toEqual value: "q~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.begin.perl"]
-      expect(tokens[1]).toEqual value: "Test this advanced one", scopes: ["source.perl", "string.quoted.other.q.perl"]
+      expect(tokens[1]).toEqual value: "Test this\\nadvanced one", scopes: ["source.perl", "string.quoted.other.q.perl"]
       expect(tokens[2]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
 
     it "q(multiline text)", ->
       lines = grammar.tokenizeLines("""q(
-      This is my first line
-      and this the second one
+      This is my first line\\n
+      and this the second one\\x00
       last
       );""")
       expect(lines[0][0]).toEqual value: "q(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
-      expect(lines[1][0]).toEqual value: "This is my first line", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
-      expect(lines[2][0]).toEqual value: "and this the second one", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
+      expect(lines[1][0]).toEqual value: "This is my first line\\n", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
+      expect(lines[2][0]).toEqual value: "and this the second one\\x00", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
       expect(lines[3][0]).toEqual value: "last", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
       expect(lines[4][0]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.end.perl"]
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
 
     it "q~multiline text~", ->
       lines = grammar.tokenizeLines("""q~
-      This is my first line
-      and this the second one)
+      This is my first line\\n
+      and this the second one)\\x00
       last
       ~;""")
       expect(lines[0][0]).toEqual value: "q~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.begin.perl"]
-      expect(lines[1][0]).toEqual value: "This is my first line", scopes: ["source.perl", "string.quoted.other.q.perl"]
-      expect(lines[2][0]).toEqual value: "and this the second one)", scopes: ["source.perl", "string.quoted.other.q.perl"]
+      expect(lines[1][0]).toEqual value: "This is my first line\\n", scopes: ["source.perl", "string.quoted.other.q.perl"]
+      expect(lines[2][0]).toEqual value: "and this the second one)\\x00", scopes: ["source.perl", "string.quoted.other.q.perl"]
       expect(lines[3][0]).toEqual value: "last", scopes: ["source.perl", "string.quoted.other.q.perl"]
       expect(lines[4][0]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.end.perl"]
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
+
+  describe "tokenizes double quoting", ->
+    it "qq(text)", ->
+      {tokens} = grammar.tokenizeLine("qq(Test this\\nsimple one);")
+      expect(tokens[0]).toEqual value: "qq(", scopes: ["source.perl", "string.quoted.other.qq-paren.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "Test this", scopes: ["source.perl", "string.quoted.other.qq-paren.perl"]
+      expect(tokens[2]).toEqual value: "\\n", scopes: ["source.perl", "string.quoted.other.qq-paren.perl", "constant.character.escape.perl"]
+      expect(tokens[3]).toEqual value: "simple one", scopes: ["source.perl", "string.quoted.other.qq-paren.perl"]
+      expect(tokens[4]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.qq-paren.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+
+    it "qq~text~", ->
+      {tokens} = grammar.tokenizeLine("qq~Test this\\nadvanced one~;")
+      expect(tokens[0]).toEqual value: "qq~", scopes: ["source.perl", "string.quoted.other.qq.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "Test this", scopes: ["source.perl", "string.quoted.other.qq.perl"]
+      expect(tokens[2]).toEqual value: "\\n", scopes: ["source.perl", "string.quoted.other.qq.perl", "constant.character.escape.perl"]
+      expect(tokens[3]).toEqual value: "advanced one", scopes: ["source.perl", "string.quoted.other.qq.perl"]
+      expect(tokens[4]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.qq.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
 
   describe "tokenizes word quoting", ->
     it "qw(word)", ->

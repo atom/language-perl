@@ -1190,11 +1190,6 @@
       '0':
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q.perl'
-    'patterns': [
-      {
-        'include': '#escaped_char'
-      }
-    ]
   }
   {
     'begin': '\''
@@ -1420,9 +1415,6 @@
     'name': 'string.quoted.other.q-paren.perl'
     'patterns': [
       {
-        'include': '#escaped_char'
-      }
-      {
         'include': '#nested_parens'
       }
     ]
@@ -1438,9 +1430,6 @@
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q-brace.perl'
     'patterns': [
-      {
-        'include': '#escaped_char'
-      }
       {
         'include': '#nested_braces'
       }
@@ -1458,9 +1447,6 @@
     'name': 'string.quoted.other.q-bracket.perl'
     'patterns': [
       {
-        'include': '#escaped_char'
-      }
-      {
         'include': '#nested_brackets'
       }
     ]
@@ -1476,9 +1462,6 @@
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q-ltgt.perl'
     'patterns': [
-      {
-        'include': '#escaped_char'
-      }
       {
         'include': '#nested_ltgt'
       }
