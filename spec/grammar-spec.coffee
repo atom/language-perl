@@ -122,6 +122,13 @@ describe "perl grammar", ->
       expect(tokens[3]).toEqual value: "qx();", scopes: ["source.perl"]
 
   describe "tokenizes single quoting", ->
+    it "'text'", ->
+      {tokens} = grammar.tokenizeLine("'Test this\\nsimple one';")
+      expect(tokens[0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "Test this\\nsimple one", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(tokens[2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
+
     it "q(text)", ->
       {tokens} = grammar.tokenizeLine("q(Test this\\nsimple one);")
       expect(tokens[0]).toEqual value: "q(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
@@ -163,6 +170,15 @@ describe "perl grammar", ->
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
 
   describe "tokenizes double quoting", ->
+    it "\"text\"", ->
+      {tokens} = grammar.tokenizeLine("\"Test this\\nsimple one\";")
+      expect(tokens[0]).toEqual value: "\"", scopes: ["source.perl", "string.quoted.double.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "Test this", scopes: ["source.perl", "string.quoted.double.perl"]
+      expect(tokens[2]).toEqual value: "\\n", scopes: ["source.perl", "string.quoted.double.perl", "constant.character.escape.perl"]
+      expect(tokens[3]).toEqual value: "simple one", scopes: ["source.perl", "string.quoted.double.perl"]
+      expect(tokens[4]).toEqual value: "\"", scopes: ["source.perl", "string.quoted.double.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+
     it "qq(text)", ->
       {tokens} = grammar.tokenizeLine("qq(Test this\\nsimple one);")
       expect(tokens[0]).toEqual value: "qq(", scopes: ["source.perl", "string.quoted.other.qq-paren.perl", "punctuation.definition.string.begin.perl"]
