@@ -4,7 +4,7 @@ fileTypes: [
   "pm6"
   "nqp"
 ]
-firstLineMatch: "(^#!.*\\bperl6\\b)|use\\s+v6"
+firstLineMatch: "(^#!.*\\b(perl6|nqp)\\b)|use\\s+v6"
 name: "Perl 6"
 patterns: [
   {
