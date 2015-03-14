@@ -42,31 +42,26 @@ describe "perl grammar", ->
       expect(tokens[6]).toEqual value: "gxr", scopes: ["source.perl", "string.regexp.replace.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
 
   describe "tokenizes constant variables", ->
-    it "test __FILE__", ->
+    it "highlight constants", ->
       {tokens} = grammar.tokenizeLine("__FILE__")
       expect(tokens[0]).toEqual value: "__FILE__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test __LINE__", ->
       {tokens} = grammar.tokenizeLine("__LINE__")
       expect(tokens[0]).toEqual value: "__LINE__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test __PACKAGE__", ->
       {tokens} = grammar.tokenizeLine("__PACKAGE__")
       expect(tokens[0]).toEqual value: "__PACKAGE__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test __SUB__", ->
       {tokens} = grammar.tokenizeLine("__SUB__")
       expect(tokens[0]).toEqual value: "__SUB__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test __END__", ->
       {tokens} = grammar.tokenizeLine("__END__")
       expect(tokens[0]).toEqual value: "__END__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test __DATA__", ->
       {tokens} = grammar.tokenizeLine("__DATA__")
       expect(tokens[0]).toEqual value: "__DATA__", scopes: ["source.perl", "constant.language.perl"]
 
-    it "test non constant", ->
+    it "does not highlight custom constants like a default constant", ->
       {tokens} = grammar.tokenizeLine("__TEST__")
       expect(tokens[0]).toEqual value: "__TEST__", scopes: ["source.perl", "string.unquoted.program-block.perl", "punctuation.definition.string.begin.perl"]
 
@@ -96,54 +91,48 @@ describe "perl grammar", ->
       expect(tokens[0]).toEqual value: "DESTROY", scopes: ["source.perl", "meta.function.perl", "entity.name.function.perl"]
 
   describe "tokenizes method calls", ->
-    it "test q (quoting) without brackets", ->
+    it "ignores highlight if called like a method", ->
       {tokens} = grammar.tokenizeLine("$test->q;")
       expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "keyword.operator.comparison.perl"]
       expect(tokens[3]).toEqual value: "q;", scopes: ["source.perl"]
 
-    it "test q (quoting) with brackets", ->
       {tokens} = grammar.tokenizeLine("$test->q();")
       expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "keyword.operator.comparison.perl"]
       expect(tokens[3]).toEqual value: "q();", scopes: ["source.perl"]
 
-    it "test qq (double quoting) with brackets", ->
       {tokens} = grammar.tokenizeLine("$test->qq();")
       expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "keyword.operator.comparison.perl"]
       expect(tokens[3]).toEqual value: "qq();", scopes: ["source.perl"]
 
-    it "test qw (word quoting) with brackets", ->
       {tokens} = grammar.tokenizeLine("$test->qw();")
       expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "keyword.operator.comparison.perl"]
       expect(tokens[3]).toEqual value: "qw();", scopes: ["source.perl"]
 
-    it "test qx (executing) with brackets", ->
       {tokens} = grammar.tokenizeLine("$test->qx();")
       expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "keyword.operator.comparison.perl"]
       expect(tokens[3]).toEqual value: "qx();", scopes: ["source.perl"]
 
   describe "tokenizes single quoting", ->
-    it "'text'", ->
+    it "does not escape characters in single-quote strings", ->
       {tokens} = grammar.tokenizeLine("'Test this\\nsimple one';")
       expect(tokens[0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
       expect(tokens[1]).toEqual value: "Test this\\nsimple one", scopes: ["source.perl", "string.quoted.single.perl"]
       expect(tokens[2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
 
-    it "q(text)", ->
       {tokens} = grammar.tokenizeLine("q(Test this\\nsimple one);")
       expect(tokens[0]).toEqual value: "q(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
       expect(tokens[1]).toEqual value: "Test this\\nsimple one", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
       expect(tokens[2]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
 
-    it "q~text~", ->
       {tokens} = grammar.tokenizeLine("q~Test this\\nadvanced one~;")
       expect(tokens[0]).toEqual value: "q~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.begin.perl"]
       expect(tokens[1]).toEqual value: "Test this\\nadvanced one", scopes: ["source.perl", "string.quoted.other.q.perl"]
       expect(tokens[2]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.end.perl"]
       expect(tokens[3]).toEqual value: ";", scopes: ["source.perl"]
 
-    it "q(multiline text)", ->
+    it "does not escape characters in single-quote multiline strings", ->
       lines = grammar.tokenizeLines("""q(
       This is my first line\\n
       and this the second one\\x00
@@ -156,7 +145,6 @@ describe "perl grammar", ->
       expect(lines[4][0]).toEqual value: ")", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.end.perl"]
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
 
-    it "q~multiline text~", ->
       lines = grammar.tokenizeLines("""q~
       This is my first line\\n
       and this the second one)\\x00
@@ -198,7 +186,7 @@ describe "perl grammar", ->
       expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
 
   describe "tokenizes word quoting", ->
-    it "qw(word)", ->
+    it "quotes words", ->
       {tokens} = grammar.tokenizeLine("qw(Aword Bword Cword);")
       expect(tokens[0]).toEqual value: "qw(", scopes: ["source.perl", "string.quoted.other.q-paren.perl", "punctuation.definition.string.begin.perl"]
       expect(tokens[1]).toEqual value: "Aword Bword Cword", scopes: ["source.perl", "string.quoted.other.q-paren.perl"]
@@ -232,7 +220,7 @@ describe "perl grammar", ->
       expect(lines[2][0]).toEqual value: "}};", scopes: ["source.perl"]
 
   describe "tokenizes format", ->
-    it "format with @", ->
+    it "works as expected", ->
       lines = grammar.tokenizeLines("""format STDOUT_TOP =
                      Passwd File
 Name                Login    Office   Uid   Gid Home
@@ -253,7 +241,6 @@ $name,              $login,  $office,$uid,$gid, $home
       expect(lines[6][0]).toEqual value: "@<<<<<<<<<<<<<<<<<< @||||||| @<<<<<<@>>>> @>>>> @<<<<<<<<<<<<<<<<<", scopes: ["source.perl", "meta.format.perl"]
       expect(lines[8][0]).toEqual value: ".", scopes: ["source.perl", "meta.format.perl"]
 
-    it "format mixed", ->
       lines = grammar.tokenizeLines("""format STDOUT_TOP =
                          Bug Reports
 @<<<<<<<<<<<<<<<<<<<<<<<     @|||         @>>>>>>>>>>>>>>>>>>>>>>>
