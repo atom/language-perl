@@ -35,7 +35,7 @@ patterns: [
         name: "storage.type.class.perl6"
       "3":
         name: "entity.name.type.class.perl6"
-    match: "(module|class|role|package|enum|grammar|slang|subset)(\\s+)(((?:::|')?(?:[A-Za-z0-9\\-]+))+)"
+    match: "(class|enum|grammar|knowhow|module|package|role|slang|subset)(\\s+)(((?:::|')?(?:[A-Za-z0-9\\-]+))+)"
     name: "meta.class.perl6"
   }
   {
@@ -51,7 +51,7 @@ patterns: [
     patterns: [
       {
         match: "\\\\['\\\\]"
-        name: "constant.character.escape"
+        name: "constant.character.escape.perl6"
       }
     ]
   }
