@@ -41,6 +41,20 @@ describe "Perl 6 grammar", ->
     it "should parse package declarations", ->
       {tokens} = grammar.tokenizeLine("class Johnny's::Super-Cool::Module")
       expect(tokens.length).toEqual 3
-      expect(tokens[0]).toEqual value: 'class', scopes: ['source.perl6', 'meta.class.perl6', 'storage.type.class.perl6']
-      expect(tokens[1]).toEqual value: ' ', scopes: ['source.perl6', 'meta.class.perl6']
-      expect(tokens[2]).toEqual value: 'Johnny\'s::Super-Cool::Module', scopes: ['source.perl6', 'meta.class.perl6', 'entity.name.type.class.perl6']
+  describe "comments", ->
+    it "should parse comments", ->
+      {tokens} = grammar.tokenizeLine("# this is the comment")
+      expect(tokens.length).toEqual 3
+      expect(tokens[0]).toEqual
+        value: '#'
+        scopes: [
+          'source.perl6'
+          'comment.line.number-sign.perl6'
+          'punctuation.definition.comment.perl6'
+        ]
+      expect(tokens[1]).toEqual
+        value: ' this is the comment',
+        scopes: [
+          'source.perl6'
+          'comment.line.number-sign.perl6'
+        ]

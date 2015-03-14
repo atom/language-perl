@@ -13,8 +13,21 @@ patterns: [
     name: "comment.block.perl6"
   }
   {
-    match: "#.*$"
-    name: "comment.line.number-sign.perl6"
+    'begin': '(^[ \\t]+)?(?=#)'
+    'beginCaptures':
+      '1':
+        'name': 'punctuation.whitespace.comment.leading.perl6'
+    'end': '(?!\\G)'
+    'patterns': [
+      {
+        'begin': '#'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.comment.perl6'
+        'end': '\\n'
+        'name': 'comment.line.number-sign.perl6'
+      }
+    ]
   }
   {
     captures:
