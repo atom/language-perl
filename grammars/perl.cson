@@ -630,13 +630,11 @@
     'captures':
       '1':
         'name': 'punctuation.definition.string.perl'
-    'end': '(?:\\/((([egimosxradlupc]*))))'
+    'end': '(\\/([egimosxradlupc]*))'
     'endCaptures':
       '1':
-        'name': 'string.regexp.find.perl'
-      '2':
         'name': 'punctuation.definition.string.perl'
-      '3':
+      '2':
         'name': 'keyword.control.regexp-option.perl'
     'name': 'string.regexp.find.perl'
     'patterns': [

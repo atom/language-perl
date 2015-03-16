@@ -60,8 +60,8 @@ describe "perl grammar", ->
       {tokens} = grammar.tokenizeLine("/text/egimosxradlupc;")
       expect(tokens[0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(tokens[1]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find.perl"]
-      expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl"]
-      expect(tokens[3]).toEqual value: "egimosxradlupc", scopes: ["source.perl", "string.regexp.find.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "egimosxradlupc", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
       expect(tokens[4]).toEqual value: ";", scopes: ["source.perl"]
 
       {tokens} = grammar.tokenizeLine("m/text/egimosxradlupc;")
