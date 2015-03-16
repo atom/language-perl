@@ -1528,8 +1528,44 @@
 ]
 'repository':
   'escaped_char':
-    'match': '\\\\.'
-    'name': 'constant.character.escape.perl'
+    'patterns': [
+      {
+        'match': '\\\\\\d+'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\c[^\\s\\\\]'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\g(?:\\{(?:\\w*|-\\d+)\\}|\\d+)'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\k(?:\\{\\w*\\}|<\\w*>|\'\\w*\')'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\N\\{[^\\}]*\\}'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\o\\{\\d*\\}'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\(?:p|P)(?:\\{\\w*\\}|P)'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\x(?:\\w+|\\{\\w*\\})?'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\.'
+        'name': 'constant.character.escape.perl'
+      }
+    ]
   'line_comment':
     'patterns': [
       {
