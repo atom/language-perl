@@ -17,28 +17,34 @@ describe "Perl 6 grammar", ->
       {tokens} = grammar.tokenizeLine('$a')
       expect(tokens[0]).toEqual value: '$a', scopes: [
         'source.perl6'
-        'variable.other.scalar.perl6'
+        'variable.other.identifier.perl6'
       ]
 
     it "should match simple array identifiers", ->
       {tokens} = grammar.tokenizeLine('@a')
       expect(tokens[0]).toEqual value: '@a', scopes: [
         'source.perl6'
-        'variable.other.array.perl6'
+        'variable.other.identifier.perl6'
       ]
 
     it "should match simple hash identifiers", ->
       {tokens} = grammar.tokenizeLine('%a')
       expect(tokens[0]).toEqual value: '%a', scopes: [
         'source.perl6'
-        'variable.other.hash.perl6'
+        'variable.other.identifier.perl6'
       ]
 
     it "should match simple hash identifiers", ->
       {tokens} = grammar.tokenizeLine('&a')
       expect(tokens[0]).toEqual value: '&a', scopes: [
         'source.perl6'
-        'variable.other.code.perl6'
+        'variable.other.identifier.perl6'
+      ]
+    it "should match unicode identifiers", ->
+      {tokens} = grammar.tokenizeLine('$cööl-páttérn')
+      expect(tokens[0]).toEqual value: '$cööl-páttérn', scopes: [
+        'source.perl6'
+        'variable.other.identifier.perl6'
       ]
 
   describe "strings", ->
@@ -62,7 +68,7 @@ describe "Perl 6 grammar", ->
 
   describe "modules", ->
     it "should parse package declarations", ->
-      {tokens} = grammar.tokenizeLine("class Johnny's::Super-Cool::Module")
+      {tokens} = grammar.tokenizeLine("class Johnny's::Super-Cool::cööl-páttérn::Module")
       expect(tokens.length).toEqual 3
       expect(tokens[0]).toEqual value: 'class', scopes: [
         'source.perl6'
@@ -76,7 +82,7 @@ describe "Perl 6 grammar", ->
           'meta.class.perl6'
         ]
       expect(tokens[2]).toEqual
-        value: 'Johnny\'s::Super-Cool::Module'
+        value: 'Johnny\'s::Super-Cool::cööl-páttérn::Module'
         scopes: [
           'source.perl6'
           'meta.class.perl6'
