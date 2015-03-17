@@ -618,17 +618,21 @@
     ]
   }
   {
-    'begin': '(?<=\\(|\\{|~|&)\\s*(\\/)'
+    'begin': '(?<=\\(|\\{|~|&)\\s*((\\/))'
     'beginCaptures':
       '1':
+        'name': 'string.regexp.find.perl'
+      '2':
         'name': 'punctuation.definition.string.perl'
-    'end': '(\\1([egimosxradlupc]*))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
+    'end': '((\\1([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
     'endCaptures':
       '1':
-        'name': 'punctuation.definition.string.perl'
+        'name': 'string.regexp.find.perl'
       '2':
+        'name': 'punctuation.definition.string.perl'
+      '3':
         'name': 'keyword.control.regexp-option.perl'
-    'name': 'string.regexp.find.perl'
+    'contentName': 'string.regexp.find.perl'
     'patterns': [
       {
         'comment': 'This is to prevent thinks like /foo$/ to treat $/ as a variable'

@@ -59,7 +59,7 @@ describe "perl grammar", ->
     it "works with all bracket/seperator variations", ->
       {tokens} = grammar.tokenizeLine(" =~ /text/acdegilmoprsux;")
       expect(tokens[0]).toEqual value: " =~", scopes: ["source.perl"]
-      expect(tokens[1]).toEqual value: " ", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(tokens[1]).toEqual value: " ", scopes: ["source.perl"]
       expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find.perl"]
       expect(tokens[4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
@@ -116,12 +116,17 @@ describe "perl grammar", ->
       (\\d)
       /x""")
       expect(lines[0][2]).toEqual value: " =~", scopes: ["source.perl"]
-      expect(lines[0][3]).toEqual value: " ", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(lines[0][3]).toEqual value: " ", scopes: ["source.perl"]
       expect(lines[0][4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(lines[1][0]).toEqual value: "(", scopes: ["source.perl", "string.regexp.find.perl"]
       expect(lines[1][2]).toEqual value: ")", scopes: ["source.perl", "string.regexp.find.perl"]
       expect(lines[2][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(lines[2][1]).toEqual value: "x", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+
+    it "does not highlight a divide operation", ->
+      {tokens} = grammar.tokenizeLine("my $foo = scalar(@bar)/2;")
+      expect(tokens[9]).toEqual value: ")/2;", scopes: ["source.perl"]
+
 
   describe "when a regexp replace tokenizes", ->
     it "works with all bracket/seperator variations", ->
