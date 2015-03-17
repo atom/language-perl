@@ -129,13 +129,20 @@ describe "perl grammar", ->
 
     it "works in a if", ->
       {tokens} = grammar.tokenizeLine("if (/ hello /i) {}")
-      expect(tokens[0]).toEqual value: "if", scopes: ["source.perl", "keyword.control.perl"]
       expect(tokens[1]).toEqual value: " (", scopes: ["source.perl"]
       expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(tokens[3]).toEqual value: " hello ", scopes: ["source.perl", "string.regexp.find.perl"]
       expect(tokens[4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(tokens[5]).toEqual value: "i", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
       expect(tokens[6]).toEqual value: ") {}", scopes: ["source.perl"]
+
+      {tokens} = grammar.tokenizeLine("if ($_ && / hello /i) {}")
+      expect(tokens[5]).toEqual value: " ", scopes: ["source.perl"]
+      expect(tokens[6]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[7]).toEqual value: " hello ", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(tokens[8]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[9]).toEqual value: "i", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[10]).toEqual value: ") {}", scopes: ["source.perl"]
 
 
   describe "when a regexp replace tokenizes", ->
