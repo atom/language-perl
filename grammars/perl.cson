@@ -676,7 +676,7 @@
         'name': 'punctuation.definition.string.perl'
       '8':
         'name': 'punctuation.definition.string.perl'
-    'match': '\\b(s|tr|y)\\s*([^A-Za-z0-9\\s])(.*?)(?<!\\\\)(\\\\{2})*(\\2)(.*?)(?<!\\\\)(\\\\{2})*(\\2)'
+    'match': '\\b(tr|y)\\s*([^A-Za-z0-9\\s])(.*?)(?<!\\\\)(\\\\{2})*(\\2)(.*?)(?<!\\\\)(\\\\{2})*(\\2)'
     'name': 'string.regexp.replace.perl'
   }
   {
@@ -1190,11 +1190,6 @@
       '0':
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q.perl'
-    'patterns': [
-      {
-        'include': '#escaped_char'
-      }
-    ]
   }
   {
     'begin': '\''
@@ -1420,9 +1415,6 @@
     'name': 'string.quoted.other.q-paren.perl'
     'patterns': [
       {
-        'include': '#escaped_char'
-      }
-      {
         'include': '#nested_parens'
       }
     ]
@@ -1438,9 +1430,6 @@
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q-brace.perl'
     'patterns': [
-      {
-        'include': '#escaped_char'
-      }
       {
         'include': '#nested_braces'
       }
@@ -1458,9 +1447,6 @@
     'name': 'string.quoted.other.q-bracket.perl'
     'patterns': [
       {
-        'include': '#escaped_char'
-      }
-      {
         'include': '#nested_brackets'
       }
     ]
@@ -1476,9 +1462,6 @@
         'name': 'punctuation.definition.string.end.perl'
     'name': 'string.quoted.other.q-ltgt.perl'
     'patterns': [
-      {
-        'include': '#escaped_char'
-      }
       {
         'include': '#nested_ltgt'
       }
@@ -1528,8 +1511,44 @@
 ]
 'repository':
   'escaped_char':
-    'match': '\\\\.'
-    'name': 'constant.character.escape.perl'
+    'patterns': [
+      {
+        'match': '\\\\\\d+'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\c[^\\s\\\\]'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\g(?:\\{(?:\\w*|-\\d+)\\}|\\d+)'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\k(?:\\{\\w*\\}|<\\w*>|\'\\w*\')'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\N\\{[^\\}]*\\}'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\o\\{\\d*\\}'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\(?:p|P)(?:\\{\\w*\\}|P)'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\x(?:\\w+|\\{\\w*\\})?'
+        'name': 'constant.character.escape.perl'
+      }
+      {
+        'match': '\\\\.'
+        'name': 'constant.character.escape.perl'
+      }
+    ]
   'line_comment':
     'patterns': [
       {
