@@ -57,53 +57,71 @@ describe "perl grammar", ->
 
   describe "when a regexp find tokenizes", ->
     it "works with all bracket/seperator variations", ->
-      {tokens} = grammar.tokenizeLine("/text/acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
-      expect(tokens[1]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ /text/acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: " ", scopes: ["source.perl", "string.regexp.find.perl"]
       expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
-      expect(tokens[3]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[4]).toEqual value: ";", scopes: ["source.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(tokens[4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("m/text/acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"]
-      expect(tokens[1]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
-      expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl"]
-      expect(tokens[3]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
-      expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ m/text/acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~ ", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl"]
+      expect(tokens[4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("m(text)acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl", "support.function.perl"]
-      expect(tokens[1]).toEqual value: "(", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl"]
-      expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl"]
-      expect(tokens[3]).toEqual value: ")", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl"]
-      expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ m(text)acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~ ", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[2]).toEqual value: "(", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl"]
+      expect(tokens[4]).toEqual value: ")", scopes: ["source.perl", "string.regexp.find-m.nested_parens.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("m{text}acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl", "support.function.perl"]
-      expect(tokens[1]).toEqual value: "{", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl"]
-      expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl"]
-      expect(tokens[3]).toEqual value: "}", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl"]
-      expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ m{text}acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~ ", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[2]).toEqual value: "{", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl"]
+      expect(tokens[4]).toEqual value: "}", scopes: ["source.perl", "string.regexp.find-m.nested_braces.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("m[text]acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl", "support.function.perl"]
-      expect(tokens[1]).toEqual value: "[", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl"]
-      expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl"]
-      expect(tokens[3]).toEqual value: "]", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl"]
-      expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ m[text]acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~ ", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[2]).toEqual value: "[", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl"]
+      expect(tokens[4]).toEqual value: "]", scopes: ["source.perl", "string.regexp.find-m.nested_brackets.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("m<text>acdegilmoprsux;")
-      expect(tokens[0]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl", "support.function.perl"]
-      expect(tokens[1]).toEqual value: "<", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl"]
-      expect(tokens[2]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl"]
-      expect(tokens[3]).toEqual value: ">", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl"]
-      expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
-      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+      {tokens} = grammar.tokenizeLine(" =~ m<text>acdegilmoprsux;")
+      expect(tokens[0]).toEqual value: " =~ ", scopes: ["source.perl"]
+      expect(tokens[1]).toEqual value: "m", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[2]).toEqual value: "<", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: "text", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl"]
+      expect(tokens[4]).toEqual value: ">", scopes: ["source.perl", "string.regexp.find-m.nested_ltgt.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ";", scopes: ["source.perl"]
 
+    it "works with multiline regexp", ->
+      lines = grammar.tokenizeLines("""$asd =~ /
+      (\\d)
+      /x""")
+      expect(lines[0][2]).toEqual value: " =~", scopes: ["source.perl"]
+      expect(lines[0][3]).toEqual value: " ", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(lines[0][4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(lines[1][0]).toEqual value: "(", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(lines[1][2]).toEqual value: ")", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(lines[2][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(lines[2][1]).toEqual value: "x", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
 
   describe "when a regexp replace tokenizes", ->
     it "works with all bracket/seperator variations", ->

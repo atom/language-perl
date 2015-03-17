@@ -166,7 +166,7 @@
   }
   {
     'applyEndPatternLast': 1
-    'begin': '\\b(?=m\\s*[^\\s\\w])'
+    'begin': '\\b(?=m\\s*[^\\sa-zA-Z0-9])'
     'comment': 'string.regexp.find-m.perl'
     'end': '((([egimosxradlupc]*)))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
     'endCaptures':
@@ -277,7 +277,7 @@
         ]
       }
       {
-        'begin': '(m)\\s*([^\\s\\w\\\'\\{\\[\\(\\<])'
+        'begin': '(m)\\s*([^\\sa-zA-Z0-9\\\'\\{\\[\\(\\<])'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
@@ -288,7 +288,7 @@
         'patterns': [
           {
             'comment': 'This is to prevent thinks like qr/foo$/ to treat $/ as a variable'
-            'match': '\\$(?=[^\\s\\w\\\'\\{\\[\\(\\<])'
+            'match': '\\$(?=[^\\sa-zA-Z0-9\\\'\\{\\[\\(\\<])'
             'name': 'keyword.control.anchor.perl'
           }
           {
@@ -618,19 +618,11 @@
     ]
   }
   {
-    'match': '\\b\\w+\\s*(?==>)'
-    'name': 'constant.other.key.perl'
-  }
-  {
-    'match': '(?<={)\\s*\\w+\\s*(?=})'
-    'name': 'constant.other.bareword.perl'
-  }
-  {
-    'begin': '(?<!\\\\)((~\\s*)?\\/)(?=\\S)(?=([^\\\\]|\\\\.)*\\/)'
-    'captures':
+    'begin': '(?<=\\(|\\{|~|&)\\s*(\\/)'
+    'beginCaptures':
       '1':
         'name': 'punctuation.definition.string.perl'
-    'end': '(\\/([egimosxradlupc]*))'
+    'end': '(\\1([egimosxradlupc]*))(?=(\\s+\\S|\\s*[;\\,\\#\\{\\}\\)]|$))'
     'endCaptures':
       '1':
         'name': 'punctuation.definition.string.perl'
@@ -639,21 +631,10 @@
     'name': 'string.regexp.find.perl'
     'patterns': [
       {
-        'include': '#escaped_char'
+        'comment': 'This is to prevent thinks like /foo$/ to treat $/ as a variable'
+        'match': '\\$(?=\\/)'
+        'name': 'keyword.control.anchor.perl'
       }
-    ]
-  }
-  {
-    'begin': '(?<!\\\\)(\\~\\s*\\/)'
-    'captures':
-      '0':
-        'name': 'punctuation.definition.string.perl'
-    'end': '\\/([cgimos]*x[cgimos]*)\\b'
-    'endCaptures':
-      '1':
-        'name': 'keyword.control.regexp-option.perl'
-    'name': 'string.regexp.find.extended.perl'
-    'patterns': [
       {
         'include': '#escaped_char'
       }
@@ -661,6 +642,14 @@
         'include': '#variable'
       }
     ]
+  }
+  {
+    'match': '\\b\\w+\\s*(?==>)'
+    'name': 'constant.other.key.perl'
+  }
+  {
+    'match': '(?<={)\\s*\\w+\\s*(?=})'
+    'name': 'constant.other.bareword.perl'
   }
   {
     'captures':
