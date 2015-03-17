@@ -127,6 +127,16 @@ describe "perl grammar", ->
       {tokens} = grammar.tokenizeLine("my $foo = scalar(@bar)/2;")
       expect(tokens[9]).toEqual value: ")/2;", scopes: ["source.perl"]
 
+    it "works in a if", ->
+      {tokens} = grammar.tokenizeLine("if (/ hello /i) {}")
+      expect(tokens[0]).toEqual value: "if", scopes: ["source.perl", "keyword.control.perl"]
+      expect(tokens[1]).toEqual value: " (", scopes: ["source.perl"]
+      expect(tokens[2]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[3]).toEqual value: " hello ", scopes: ["source.perl", "string.regexp.find.perl"]
+      expect(tokens[4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: "i", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
+      expect(tokens[6]).toEqual value: ") {}", scopes: ["source.perl"]
+
 
   describe "when a regexp replace tokenizes", ->
     it "works with all bracket/seperator variations", ->
