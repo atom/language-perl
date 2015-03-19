@@ -465,7 +465,7 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(lines[25][0]).toEqual value: "~                                    ^<<<<<<<<<<<<<<<<<<<<<<<...", scopes: ["source.perl", "meta.format.perl"]
       expect(lines[27][0]).toEqual value: ".", scopes: ["source.perl", "meta.format.perl"]
 
-  describe "when a function call tokenizes", ->
+  describe "when a heredoc tokenizes", ->
     it "does not highlight the whole line", ->
       lines = grammar.tokenizeLines("""$asd->foo(<<TEST, $bar, s/foo/bar/g);
       asd
