@@ -800,6 +800,35 @@
       }
     ]
   }
+  # {
+  #   'begin': '(((<<) *"CSS"))(.*)\\n?'
+  #   'captures':
+  #     '1':
+  #       'name': 'punctuation.definition.string.perl'
+  #     '2':
+  #       'name': 'string.unquoted.heredoc.doublequote.perl'
+  #     '3':
+  #       'name': 'punctuation.definition.heredoc.perl'
+  #     '4':
+  #       'patterns': [
+  #         {
+  #           'include': '$self'
+  #         }
+  #       ]
+  #   'contentName': 'text.css.embedded.perl'
+  #   'end': '(^CSS$)'
+  #   'patterns': [
+  #     {
+  #       'include': '#escaped_char'
+  #     }
+  #     {
+  #       'include': '#variable'
+  #     }
+  #     {
+  #       'include': 'source.css'
+  #     }
+  #   ]
+  # }
   {
     'begin': '(((<<) *"JAVASCRIPT"))(.*)\\n?'
     'captures':
@@ -959,6 +988,29 @@
       }
     ]
   }
+  # {
+  #   'begin': '(((<<) *\'CSS\'))(.*)\\n?'
+  #   'captures':
+  #     '1':
+  #       'name': 'punctuation.definition.string.perl'
+  #     '2':
+  #       'name': 'string.unquoted.heredoc.quote.perl'
+  #     '3':
+  #       'name': 'punctuation.definition.heredoc.perl'
+  #     '4':
+  #       'patterns': [
+  #         {
+  #           'include': '$self'
+  #         }
+  #       ]
+  #   'contentName': 'text.css.embedded.perl'
+  #   'end': '(^CSS$)'
+  #   'patterns': [
+  #     {
+  #       'include': 'source.css'
+  #     }
+  #   ]
+  # }
   {
     'begin': '(((<<) *\'JAVASCRIPT\'))(.*)\\n?'
     'captures':
