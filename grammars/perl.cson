@@ -1099,6 +1099,24 @@
     'end': '(^\\4$)'
   }
   {
+    'begin': '(((<<) *\\\\((?![=\\d\\$\\( ])[^;,\'"`\\s\\)]*)))(.*)\\n?'
+    'captures':
+      '1':
+        'name': 'punctuation.definition.string.perl'
+      '2':
+        'name': 'string.unquoted.heredoc.quote.perl'
+      '3':
+        'name': 'punctuation.definition.heredoc.perl'
+      '5':
+        'patterns': [
+          {
+            'include': '$self'
+          }
+        ]
+    'contentName': 'string.unquoted.heredoc.quote.perl'
+    'end': '(^\\4$)'
+  }
+  {
     'begin': '(((<<) *`([^`]*)`))(.*)\\n?'
     'captures':
       '1':
