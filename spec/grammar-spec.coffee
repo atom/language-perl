@@ -466,6 +466,29 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(lines[27][0]).toEqual value: ".", scopes: ["source.perl", "meta.format.perl"]
 
 
+  describe "when a heredoc tokenizes", ->
+    it "does not highlight the whole line", ->
+      lines = grammar.tokenizeLines("""$asd->foo(<<TEST, $bar, s/foo/bar/g);
+asd
+TEST
+;""")
+      expect(lines[0][4]).toEqual value: "<<", scopes: ["source.perl", "punctuation.definition.string.perl", "string.unquoted.heredoc.perl", "punctuation.definition.heredoc.perl"]
+      expect(lines[0][5]).toEqual value: "TEST", scopes: ["source.perl", "punctuation.definition.string.perl", "string.unquoted.heredoc.perl"]
+      expect(lines[0][6]).toEqual value: ", ", scopes: ["source.perl"]
+      expect(lines[3][0]).toEqual value: ";", scopes: ["source.perl"]
+
+    it "does not highlight variables and escape sequences in a single quote heredoc", ->
+      lines = grammar.tokenizeLines("""$asd->foo(<<'TEST');
+$asd\\n
+;""")
+      expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
+
+      lines = grammar.tokenizeLines("""$asd->foo(<<\\TEST);
+$asd\\n
+;""")
+      expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
+
+
   describe "when a hash variable tokenizes", ->
     it "does not highlight whitespace beside a key as a constant", ->
       lines = grammar.tokenizeLines("""my %hash = (
