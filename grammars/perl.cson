@@ -648,8 +648,10 @@
     ]
   }
   {
-    'match': '\\b\\w+\\s*(?==>)'
-    'name': 'constant.other.key.perl'
+    'captures':
+      '1':
+        'name': 'constant.other.key.perl'
+    'match': '\\b(\\w+)\\s*(?==>)'
   }
   {
     'match': '(?<={)\\s*\\w+\\s*(?=})'
