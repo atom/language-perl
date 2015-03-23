@@ -392,8 +392,8 @@ describe "perl grammar", ->
       lines = grammar.tokenizeLines("""my $test = { a => sub {
           print "asd";
       }};""")
-      expect(lines[0][7]).toEqual value: "sub", scopes: ["source.perl", "meta.function.perl", "storage.type.sub.perl"]
-      expect(lines[0][9]).toEqual value: "{", scopes: ["source.perl"]
+      expect(lines[0][9]).toEqual value: "sub", scopes: ["source.perl", "meta.function.perl", "storage.type.sub.perl"]
+      expect(lines[0][11]).toEqual value: "{", scopes: ["source.perl"]
       expect(lines[2][0]).toEqual value: "}};", scopes: ["source.perl"]
 
   describe "tokenizes format", ->
@@ -464,3 +464,17 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(lines[23][0]).toEqual value: "~                                    ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<", scopes: ["source.perl", "meta.format.perl"]
       expect(lines[25][0]).toEqual value: "~                                    ^<<<<<<<<<<<<<<<<<<<<<<<...", scopes: ["source.perl", "meta.format.perl"]
       expect(lines[27][0]).toEqual value: ".", scopes: ["source.perl", "meta.format.perl"]
+
+
+  describe "when a hash variable tokenizes", ->
+    it "does not highlight whitespace beside a key as a constant", ->
+      lines = grammar.tokenizeLines("""my %hash = (
+  key => 'value1',
+  'key' => 'value2'
+);""")
+      expect(lines[1][0]).toEqual value: "key", scopes: ["source.perl", "constant.other.key.perl"]
+      expect(lines[1][1]).toEqual value: " ", scopes: ["source.perl"]
+      expect(lines[2][0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(lines[2][1]).toEqual value: "key", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(lines[2][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(lines[2][3]).toEqual value: " ", scopes: ["source.perl"]
