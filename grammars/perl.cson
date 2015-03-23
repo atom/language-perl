@@ -741,7 +741,7 @@
     'name': 'keyword.operator.logical.perl'
   }
   {
-    'match': '(<=>| =>|->)'
+    'match': '(<=>|=>|->)'
     'name': 'keyword.operator.comparison.perl'
   }
   {
