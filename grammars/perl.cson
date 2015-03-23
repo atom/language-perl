@@ -684,6 +684,17 @@
   {
     'captures':
       '1':
+        'name': 'storage.type.sub.perl'
+      '2':
+        'name': 'entity.name.function.perl'
+      '3':
+        'name': 'support.function.method.moose.perl'
+    'match': '\\b(method)(?:\\s+([-a-zA-Z0-9_]+))?\\s*(?:\\([\\$\\@\\*;]*\\))?[^\\w\\{]'
+    'name': 'meta.function.perl'
+  }
+  {
+    'captures':
+      '1':
         'name': 'entity.name.function.perl'
       '2':
         'name': 'punctuation.definition.parameters.perl'
@@ -725,7 +736,7 @@
     'name': 'constant.language.perl'
   }
   {
-    'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|package|require|use|eval)\\b'
+    'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|package|requires?|use|eval)\\b'
     'name': 'keyword.control.perl'
   }
   {
@@ -1713,8 +1724,64 @@
         'name': 'entity.name.function.perl'
   }
   {
+    'begin': '\\b(subtype)\\b'
+    'beginCaptures':
+      '1':
+        'name': 'support.type.subtype.moose.perl'
+    'end': ';';
+    'patterns': [
+      {
+        'match': '\\b(as|where|message)\\b'
+        'name': 'support.type.moose.perl'
+      }
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
+    'begin': '\\b(coerce)\\b'
+    'beginCaptures':
+      '1':
+        'name': 'support.type.coerce.moose.perl'
+    'end': ';';
+    'patterns': [
+      {
+        'match': '\\b(from|via)\\b'
+        'name': 'support.type.moose.perl'
+      }
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
+    'begin': '\\b(type)\\b'
+    'beginCaptures':
+      '1':
+        'name': 'support.type.coerce.moose.perl'
+    'end': ';';
+    'patterns': [
+      {
+        'match': '\\b(where)\\b'
+        'name': 'support.type.moose.perl'
+      }
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
     'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|cmp|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eq|eval|exec|exists|exp|fcntl|fileno|flock|fork|formline|ge|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|gt|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|le|length|link|listen|local|localtime|log|lstat|lt|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|ne|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|quotemeta|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y)\\b'
     'name': 'support.function.perl'
+  }
+  {
+    'match': '\\b(after|before|enum|has|union)\\b'
+    'name': 'support.function.moose.perl'
+  }
+  {
+    'match': '\\b((duck|class|maybe|role)_type|Any|Item|Bool|Maybe|Undef|Defined|Value|Str|Num|Int|ClassName|RoleName|Ref|ScalarRef|ArrayRef|HashRef|CodeRef|RegexpRef|GlobRef|FileHandle|Object)\\b'
+    'name': 'support.type.moose.perl'
   }
 ]
 'repository':
