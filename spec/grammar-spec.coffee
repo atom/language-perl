@@ -54,6 +54,13 @@ describe "perl grammar", ->
       expect(tokens[4]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.compile.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
       expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
 
+    it "does not treat $) as a variable", ->
+      {tokens} = grammar.tokenizeLine("qr(^text$);")
+      expect(tokens[2]).toEqual value: "^text", scopes: ["source.perl", "string.regexp.compile.nested_parens.perl"]
+      expect(tokens[3]).toEqual value: "$", scopes: ["source.perl", "string.regexp.compile.nested_parens.perl"]
+      expect(tokens[4]).toEqual value: ")", scopes: ["source.perl", "string.regexp.compile.nested_parens.perl", "punctuation.definition.string.perl"]
+      expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
+
 
   describe "when a regexp find tokenizes", ->
     it "works with all bracket/seperator variations", ->

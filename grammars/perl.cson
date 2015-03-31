@@ -111,6 +111,10 @@
         'name': 'string.regexp.compile.nested_parens.perl'
         'patterns': [
           {
+            'comment': 'This is to prevent thinks like qr/foo$/ to treat $/ as a variable'
+            'match': '\\$(?=[^\\s\\w\\\'\\{\\[\\(\\<])'
+          }
+          {
             'include': '#escaped_char'
           }
           {
