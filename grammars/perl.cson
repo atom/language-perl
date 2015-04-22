@@ -850,7 +850,7 @@
             'include': '$self'
           }
         ]
-    'contentName': 'text.js.embedded.perl'
+    'contentName': 'source.js.embedded.perl'
     'end': '(^JAVASCRIPT$)'
     'patterns': [
       {
@@ -1032,7 +1032,7 @@
             'include': '$self'
           }
         ]
-    'contentName': 'text.js.embedded.perl'
+    'contentName': 'source.js.embedded.perl'
     'end': '(^JAVASCRIPT$)'
     'patterns': [
       {
@@ -1221,7 +1221,7 @@
             'include': '$self'
           }
         ]
-    'contentName': 'text.js.embedded.perl'
+    'contentName': 'source.js.embedded.perl'
     'end': '(^JAVASCRIPT$)'
     'patterns': [
       {
