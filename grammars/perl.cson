@@ -667,11 +667,7 @@
         'name': 'keyword.control.perl'
       '2':
         'name': 'entity.name.type.class.perl'
-      '3':
-        'name': 'comment.line.number-sign.perl'
-      '4':
-        'name': 'punctuation.definition.comment.perl'
-    'match': '^\\s*(package)\\s+(\\S+)\\s*((#).*)?$\\n?'
+    'match': '^\\s*(package)\\s+([^\\s;]+)'
     'name': 'meta.class.perl'
   }
   {
@@ -729,7 +725,7 @@
     'name': 'constant.language.perl'
   }
   {
-    'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|package|require|use|eval)\\b'
+    'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|require|use|eval)\\b'
     'name': 'keyword.control.perl'
   }
   {
