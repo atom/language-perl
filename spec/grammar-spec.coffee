@@ -508,3 +508,14 @@ $asd\\n
       expect(lines[2][1]).toEqual value: "key", scopes: ["source.perl", "string.quoted.single.perl"]
       expect(lines[2][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
       expect(lines[2][3]).toEqual value: " ", scopes: ["source.perl"]
+
+
+  describe "when package to tokenizes", ->
+    it "does not highlight semicolon in package name", ->
+      {tokens} = grammar.tokenizeLine("package Test::ASD; #this is my new class")
+      expect(tokens[0]).toEqual value: "package", scopes: ["source.perl", "meta.class.perl", "keyword.control.perl"]
+      expect(tokens[1]).toEqual value: " ", scopes: ["source.perl", "meta.class.perl"]
+      expect(tokens[2]).toEqual value: "Test::ASD", scopes: ["source.perl", "meta.class.perl", "entity.name.type.class.perl"]
+      expect(tokens[3]).toEqual value: "; ", scopes: ["source.perl"]
+      expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
+      expect(tokens[5]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
