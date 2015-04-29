@@ -519,3 +519,11 @@ $asd\\n
       expect(tokens[3]).toEqual value: "; ", scopes: ["source.perl"]
       expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
       expect(tokens[5]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
+
+
+  describe "when a glob string tokenizes", ->
+    it "works as expected", ->
+      {tokens} = grammar.tokenizeLine("@spacies = <\"*e f*\">;")
+      expect(tokens[3]).toEqual value: "<", scopes: ["source.perl", "string.unquoted.other.glob.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[4]).toEqual value: "\"*e f*\"", scopes: ["source.perl", "string.unquoted.other.glob.perl"]
+      expect(tokens[5]).toEqual value: ">", scopes: ["source.perl", "string.unquoted.other.glob.perl", "punctuation.definition.string.end.perl"]

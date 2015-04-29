@@ -1687,6 +1687,17 @@
     'name': 'string.unquoted.program-block.perl'
   }
   {
+    'begin': '\\<'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.perl'
+    'end': '\\>'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.perl'
+    'name': 'string.unquoted.other.glob.perl'
+  }
+  {
     'begin': '\\b(format)\\s+(\\w+)\\s*='
     'beginCaptures':
       '1':
