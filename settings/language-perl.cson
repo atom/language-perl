@@ -4,3 +4,4 @@
     'increaseIndentPattern': '^.*\\{\\}?\\s*$'
     'decreaseIndentPattern': '^\\s*\\}'
     'commentStart': '# '
+    'nonWordCharacters': '/\\()"\':,.;<>~!#^&*|+=[]{}`?-'
