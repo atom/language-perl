@@ -280,13 +280,13 @@ describe "perl grammar", ->
 
   describe "when a function call tokenizes", ->
     it "does not highlight calls which looks like a regexp", ->
-      {tokens} = grammar.tokenizeLine("s_ttest($key,\"t_storage\",$single_task);");
+      {tokens} = grammar.tokenizeLine("s_ttest($key,\"t_storage\",$single_task);")
       expect(tokens[0]).toEqual value: "s_ttest(", scopes: ["source.perl"]
       expect(tokens[3]).toEqual value: ",", scopes: ["source.perl"]
       expect(tokens[7]).toEqual value: ",", scopes: ["source.perl"]
       expect(tokens[10]).toEqual value: ");", scopes: ["source.perl"]
 
-      {tokens} = grammar.tokenizeLine("s__ttest($key,\"t_license\",$single_task);");
+      {tokens} = grammar.tokenizeLine("s__ttest($key,\"t_license\",$single_task);")
       expect(tokens[0]).toEqual value: "s__ttest(", scopes: ["source.perl"]
       expect(tokens[3]).toEqual value: ",", scopes: ["source.perl"]
       expect(tokens[7]).toEqual value: ",", scopes: ["source.perl"]
