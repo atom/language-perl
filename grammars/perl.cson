@@ -1749,7 +1749,7 @@
         'name': 'constant.character.escape.perl'
       }
       {
-        'match': '\\\\x(?:\\w+|\\{\\w*\\})?'
+        'match': '\\\\x(?:[0-9a-zA-Z]{2}|\\{\\w*\\})?'
         'name': 'constant.character.escape.perl'
       }
       {

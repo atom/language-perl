@@ -337,6 +337,17 @@ describe "perl grammar", ->
       expect(lines[4][0]).toEqual value: "~", scopes: ["source.perl", "string.quoted.other.q.perl", "punctuation.definition.string.end.perl"]
       expect(lines[4][1]).toEqual value: ";", scopes: ["source.perl"]
 
+    it "does not highlight the whole word as an escape sequence", ->
+      {tokens} = grammar.tokenizeLine("\"I l\\xF6ve th\\x{00E4}s\";")
+      expect(tokens[0]).toEqual value: "\"", scopes: ["source.perl", "string.quoted.double.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "I l", scopes: ["source.perl", "string.quoted.double.perl"]
+      expect(tokens[2]).toEqual value: "\\xF6", scopes: ["source.perl", "string.quoted.double.perl", "constant.character.escape.perl"]
+      expect(tokens[3]).toEqual value: "ve th", scopes: ["source.perl", "string.quoted.double.perl"]
+      expect(tokens[4]).toEqual value: "\\x{00E4}", scopes: ["source.perl", "string.quoted.double.perl", "constant.character.escape.perl"]
+      expect(tokens[5]).toEqual value: "s", scopes: ["source.perl", "string.quoted.double.perl"]
+      expect(tokens[6]).toEqual value: "\"", scopes: ["source.perl", "string.quoted.double.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[7]).toEqual value: ";", scopes: ["source.perl"]
+
   describe "tokenizes double quoting", ->
     it "does escape characters in double-quote strings", ->
       {tokens} = grammar.tokenizeLine("\"Test\\tthis\\nsimple one\";")
