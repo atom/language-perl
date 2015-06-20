@@ -61,7 +61,7 @@ describe "perl grammar", ->
       expect(tokens[4]).toEqual value: ")", scopes: ["source.perl", "string.regexp.compile.nested_parens.perl", "punctuation.definition.string.perl"]
       expect(tokens[5]).toEqual value: ";", scopes: ["source.perl"]
 
-    it "does not tread ( in a class as a group", ->
+    it "does not treat ( in a class as a group", ->
       {tokens} = grammar.tokenizeLine("m/ \\A [(]? [?] .* - /smx")
       expect(tokens[1]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
       expect(tokens[5]).toEqual value: "[", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl"]
