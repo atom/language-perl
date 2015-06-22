@@ -725,7 +725,7 @@
     'name': 'constant.language.perl'
   }
   {
-    'begin': '(__DATA__)\\n?'
+    'begin': '\\b(__DATA__)\\n?'
     'captures':
       '1':
         'name': 'constant.language.perl'
