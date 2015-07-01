@@ -735,8 +735,15 @@
     'name': 'string.regexp.replace.perl'
   }
   {
-    'match': '\\b(__FILE__|__LINE__|__PACKAGE__|__SUB__|__DATA__|__END__)\\b'
+    'match': '\\b(__FILE__|__LINE__|__PACKAGE__|__SUB__)\\b'
     'name': 'constant.language.perl'
+  }
+  {
+    'begin': '\\b(__DATA__|__END__)\\n?'
+    'captures':
+      '1':
+        'name': 'constant.language.perl'
+    'contentName': 'text.embedded.perl'
   }
   {
     'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|require|use|eval)\\b'
