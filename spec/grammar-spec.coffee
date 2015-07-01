@@ -221,6 +221,34 @@ describe "perl grammar", ->
       expect(tokens[5]).toEqual value: "_", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
       expect(tokens[6]).toEqual value: "acdegilmoprsux", scopes: ["source.perl", "string.regexp.replace.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
 
+    it "works with two '/' delimiter in the first line, and one in the last", ->
+      lines = grammar.tokenizeLines("""$line =~ s/&#(\\d+);/
+        chr($1)
+      /gxe;""")
+      expect(lines[0][4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[0][8]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[2][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[2][2]).toEqual value: ";", scopes: ["source.perl"]
+
+    it "works with one '/' delimiter in the first line, one in the next and one in the last", ->
+      lines = grammar.tokenizeLines("""$line =~ s/&#(\\d+);
+      /
+        chr($1)
+      /gxe;""")
+      expect(lines[0][4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[1][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[3][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[3][2]).toEqual value: ";", scopes: ["source.perl"]
+
+    it "works with one '/' delimiter in the first line and two in the last", ->
+      lines = grammar.tokenizeLines("""$line =~ s/&#(\\d+);
+      /chr($1)/gxe;""")
+      expect(lines[0][4]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[1][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[1][5]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(lines[1][7]).toEqual value: ";", scopes: ["source.perl"]
+
+
   describe "tokenizes constant variables", ->
     it "highlights constants", ->
       {tokens} = grammar.tokenizeLine("__FILE__")
