@@ -7,6 +7,7 @@
   'pod'
   'psgi'
   't'
+  'vcl'
 ]
 'firstLineMatch': '^#!.*\\bperl\\b'
 'patterns': [
