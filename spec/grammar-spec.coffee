@@ -70,6 +70,12 @@ describe "perl grammar", ->
       expect(tokens[13]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find-m.simple-delimiter.perl", "punctuation.definition.string.perl"]
       expect(tokens[14]).toEqual value: "smx", scopes: ["source.perl", "string.regexp.find-m.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
 
+    it "does not treat 'm'(hashkey) as a regex match begin", ->
+      {tokens} = grammar.tokenizeLine("$foo->{m}->bar();")
+      expect(tokens[3]).toEqual value: "{", scopes: ["source.perl"]
+      expect(tokens[4]).toEqual value: "m", scopes: ["source.perl", "constant.other.bareword.perl"]
+      expect(tokens[5]).toEqual value: "}", scopes: ["source.perl"]
+
 
   describe "when a regexp find tokenizes", ->
     it "works with all bracket/seperator variations", ->
