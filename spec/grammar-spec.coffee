@@ -76,7 +76,6 @@ describe "perl grammar", ->
       expect(tokens[4]).toEqual value: "m", scopes: ["source.perl", "constant.other.bareword.perl"]
       expect(tokens[5]).toEqual value: "}", scopes: ["source.perl"]
 
-
   describe "when a regexp find tokenizes", ->
     it "works with all bracket/seperator variations", ->
       {tokens} = grammar.tokenizeLine(" =~ /text/acdegilmoprsux;")
@@ -166,7 +165,6 @@ describe "perl grammar", ->
       expect(tokens[9]).toEqual value: "i", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
       expect(tokens[10]).toEqual value: ") {}", scopes: ["source.perl"]
 
-
   describe "when a regexp replace tokenizes", ->
     it "works with all bracket/seperator variations", ->
       {tokens} = grammar.tokenizeLine("s/text/test/acdegilmoprsux")
@@ -253,7 +251,6 @@ describe "perl grammar", ->
       expect(lines[1][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
       expect(lines[1][5]).toEqual value: "/", scopes: ["source.perl", "string.regexp.replace.extended.simple_delimiter.perl", "punctuation.definition.string.perl"]
       expect(lines[1][7]).toEqual value: ";", scopes: ["source.perl"]
-
 
   describe "tokenizes constant variables", ->
     it "highlights constants", ->
@@ -526,7 +523,6 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(lines[25][0]).toEqual value: "~                                    ^<<<<<<<<<<<<<<<<<<<<<<<...", scopes: ["source.perl", "meta.format.perl"]
       expect(lines[27][0]).toEqual value: ".", scopes: ["source.perl", "meta.format.perl"]
 
-
   describe "when a heredoc tokenizes", ->
     it "does not highlight the whole line", ->
       lines = grammar.tokenizeLines("""$asd->foo(<<TEST, $bar, s/foo/bar/g);
@@ -549,7 +545,6 @@ $asd\\n
 ;""")
       expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
 
-
   describe "when a hash variable tokenizes", ->
     it "does not highlight whitespace beside a key as a constant", ->
       lines = grammar.tokenizeLines("""my %hash = (
@@ -562,7 +557,6 @@ $asd\\n
       expect(lines[2][1]).toEqual value: "key", scopes: ["source.perl", "string.quoted.single.perl"]
       expect(lines[2][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
       expect(lines[2][3]).toEqual value: " ", scopes: ["source.perl"]
-
 
   describe "when package to tokenizes", ->
     it "does not highlight semicolon in package name", ->
