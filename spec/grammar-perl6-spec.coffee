@@ -40,11 +40,47 @@ describe "Perl 6 grammar", ->
         'source.perl6'
         'variable.other.identifier.perl6'
       ]
+
     it "should match unicode identifiers", ->
       {tokens} = grammar.tokenizeLine('$cööl-páttérn')
       expect(tokens[0]).toEqual value: '$cööl-páttérn', scopes: [
         'source.perl6'
         'variable.other.identifier.perl6'
+      ]
+
+    it "identifiers with dash can contain other keywords", ->
+      {tokens} = grammar.tokenizeLine('start-from-here')
+      expect(tokens.length).toEqual 1
+      expect(tokens[0]).toEqual value: 'start-from-here', scopes: [
+        'source.perl6'
+      ]
+
+    it "identifiers with dash can contain other keywords", ->
+      {tokens} = grammar.tokenizeLine('start-here')
+      expect(tokens.length).toEqual 1
+      expect(tokens[0]).toEqual value: 'start-here', scopes: [
+        'source.perl6'
+      ]
+
+    it "identifiers with dash can contain other keywords", ->
+      {tokens} = grammar.tokenizeLine('is-required')
+      expect(tokens.length).toEqual 1
+      expect(tokens[0]).toEqual value: 'is-required', scopes: [
+        'source.perl6'
+      ]
+
+    it "identifiers with dash can contain other keywords", ->
+      {tokens} = grammar.tokenizeLine('is-utf8')
+      expect(tokens.length).toEqual 1
+      expect(tokens[0]).toEqual value: 'is-utf8', scopes: [
+        'source.perl6'
+      ]
+
+    it "identifiers with dash can contain other keywords", ->
+      {tokens} = grammar.tokenizeLine('is-')
+      expect(tokens.length).toEqual 1
+      expect(tokens[0]).toEqual value: 'is-', scopes: [
+        'source.perl6'
       ]
 
   describe "strings", ->
