@@ -637,7 +637,7 @@
     ]
   }
   {
-    'begin': '(?<=\\(|\\{|~|&)\\s*((\\/))'
+    'begin': '(?<=\\(|\\{|~|&|\\||if|unless|^)\\s*((\\/))'
     'beginCaptures':
       '1':
         'name': 'string.regexp.find.perl'
