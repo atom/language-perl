@@ -309,6 +309,15 @@ describe "perl grammar", ->
       {tokens} = grammar.tokenizeLine("__TEST__")
       expect(tokens[0]).toEqual value: "__TEST__", scopes: ["source.perl", "string.unquoted.program-block.perl", "punctuation.definition.string.begin.perl"]
 
+  describe "when an __END__ constant is used", ->
+    it "does not highlight subsequent lines", ->
+      lines = grammar.tokenizeLines("""
+      "String";
+      __END__
+      "String";
+      """)
+      expect(lines[2][0]).toEqual value: '"String";', scopes: ["source.perl", "text.embedded.perl"]
+
   describe "tokenizes compile phase keywords", ->
     it "does highlight all compile phase keywords", ->
       {tokens} = grammar.tokenizeLine("BEGIN")

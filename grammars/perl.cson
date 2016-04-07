@@ -745,6 +745,7 @@
       '1':
         'name': 'constant.language.perl'
     'contentName': 'text.embedded.perl'
+    'end': '(?=N)A'
   }
   {
     'match': '(?<!->)\\b(continue|die|do|else|elsif|exit|for|foreach|goto|if|last|next|redo|return|select|unless|until|wait|while|switch|case|require|use|eval)\\b'
