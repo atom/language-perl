@@ -169,6 +169,15 @@
       }
     ]
   }
+{
+    'name' : 'punctuation.regex.test';
+    'comment' : 'poor mans solution to m/xxx/m issue with syntax';
+    'begin' : 'm\/';
+    'end' : '\/m?';
+    'captures' :
+        '0' :
+            'name' : 'punctuation.definition.string.perl'
+}
   {
     'applyEndPatternLast': 1
     'begin': '(?<!\\{|\\+|\\-)\\b(?=m\\s*[^\\sa-zA-Z0-9])'
