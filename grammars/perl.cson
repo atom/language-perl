@@ -744,7 +744,7 @@
     'captures':
       '1':
         'name': 'constant.language.perl'
-    'contentName': 'text.embedded.perl'
+    'contentName': 'comment.block.documentation.perl'
     'end': '(?=N)A'
   }
   {
