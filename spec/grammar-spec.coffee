@@ -1,4 +1,4 @@
-describe "perl grammar", ->
+describe "Perl grammar", ->
   grammar = null
 
   beforeEach ->
@@ -610,8 +610,8 @@ $asd\\n
       expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
       expect(tokens[5]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
 
-  describe "when tokenising POD markup", ->
-    it "highlights POD commands", ->
+  describe "when tokenising Pod markup", ->
+    it "highlights Pod commands", ->
       lines = grammar.tokenizeLines """
         =pod
         Bar

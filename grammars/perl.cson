@@ -1940,7 +1940,7 @@
   'pod':
     'patterns': [
       {
-        # Niladic POD commandss
+        # Niladic Pod commandss
         'match': '^=(pod|back|cut)\\b'
         'name': 'storage.type.class.pod.perl'
       }
@@ -1967,7 +1967,7 @@
         ]
       }
       {
-        # POD commands with highlighted arguments
+        # Pod commands with highlighted arguments
         'match': '^(=(?:head[1-4]|item|over|encoding|begin|end|for))\\b\\s*(.*)'
         'captures':
           '1':
