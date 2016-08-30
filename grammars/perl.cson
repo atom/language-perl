@@ -15,12 +15,21 @@
     'include': '#line_comment'
   }
   {
-    'begin': '^='
-    'captures':
-      '0':
-        'name': 'punctuation.definition.comment.perl'
-    'end': '^=cut'
+    'begin': '^(?==)'
+    'end': '^(=cut\\b.*$)'
+    'endCaptures':
+      '1':
+        'patterns': [
+          {
+            'include': '#pod'
+          }
+        ]
     'name': 'comment.block.documentation.perl'
+    'patterns': [
+      {
+        'include': '#pod'
+      }
+    ]
   }
   {
     'include': '#variable'
@@ -746,6 +755,11 @@
         'name': 'constant.language.perl'
     'contentName': 'comment.block.documentation.perl'
     'end': '(?=N)A'
+    'patterns': [
+      {
+        'include': '#pod'
+      }
+    ]
   }
   {
     'match': '(?<!->)\\b(continue|default|die|do|else|elsif|exit|for|foreach|given|goto|if|last|next|redo|return|select|unless|until|wait|when|while|switch|case|require|use|eval)\\b'
@@ -1921,6 +1935,98 @@
       }
       {
         'include': '#nested_parens_interpolated'
+      }
+    ]
+  'pod':
+    'patterns': [
+      {
+        # Niladic POD commandss
+        'match': '^=(pod|back|cut)\\b'
+        'name': 'storage.type.class.pod.perl'
+      }
+      {
+        # Embedded text/data
+        'begin': '^(=begin)\\s+(html)\\s*$'
+        'end': '^(=end)\\s+(html)|^(?==cut)'
+        'name': 'meta.embedded.pod.perl'
+        'beginCaptures':
+          '1':
+            'name': 'storage.type.class.pod.perl'
+          '2':
+            'name': 'variable.other.pod.perl'
+        'endCaptures':
+          '1':
+            'name': 'storage.type.class.pod.perl'
+          '2':
+            'name': 'variable.other.pod.perl'
+        'contentName': 'text.embedded.html.basic'
+        'patterns': [
+          {
+            'include': 'text.html.basic'
+          }
+        ]
+      }
+      {
+        # POD commands with highlighted arguments
+        'match': '^(=(?:head[1-4]|item|over|encoding|begin|end|for))\\b\\s*(.*)'
+        'captures':
+          '1':
+            'name': 'storage.type.class.pod.perl'
+          '2':
+            'name': 'variable.other.pod.perl'
+            'patterns': [
+              {
+                'include': '#pod-formatting'
+              }
+            ]
+      }
+      {
+        'include': '#pod-formatting'
+      }
+    ]
+  'pod-formatting':
+    'patterns': [
+      {
+        # Italic text
+        'match': 'I(?:<([^<>]+)>|<+(\\s+(?:(?<!\\s)>|[^>])+\\s+)>+)'
+        'name': 'entity.name.type.instance.pod.perl'
+        'captures':
+          '1':
+            'name': 'markup.italic.pod.perl'
+          '2':
+            'name': 'markup.italic.pod.perl'
+      }
+      {
+        # Bold text
+        'match': 'B(?:<([^<>]+)>|<+(\\s+(?:(?<!\\s)>|[^>])+\\s+)>+)'
+        'name': 'entity.name.type.instance.pod.perl'
+        'captures':
+          '1':
+            'name': 'markup.bold.pod.perl'
+          '2':
+            'name': 'markup.bold.pod.perl'
+      }
+      {
+        # Constant-width/"preformatted" text
+        'match': 'C(?:<([^<>]+)>|<+(\\s+(?:(?<!\\s)>|[^>])+\\s+)>+)'
+        'name': 'entity.name.type.instance.pod.perl'
+        'captures':
+          '1':
+            'name': 'markup.raw.pod.perl'
+          '2':
+            'name': 'markup.raw.pod.perl'
+      }
+      {
+        # Link
+        'match': 'L<([^>]+)>'
+        'name': 'entity.name.type.instance.pod.perl'
+        'captures':
+          '1':
+            'name': 'markup.underline.link.hyperlink.pod.perl'
+      }
+      {
+        'match': '[EFSXZ]<[^>]*>'
+        'name': 'entity.name.type.instance.pod.perl'
       }
     ]
   'variable':
