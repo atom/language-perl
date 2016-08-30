@@ -609,3 +609,79 @@ $asd\\n
       expect(tokens[3]).toEqual value: "; ", scopes: ["source.perl"]
       expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
       expect(tokens[5]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
+
+  describe "when tokenising POD markup", ->
+    it "highlights POD commands", ->
+      lines = grammar.tokenizeLines """
+        =pod
+        Bar
+        =cut
+      """
+      expect(lines[0][0]).toEqual value: "=pod", scopes: ["source.perl", "comment.block.documentation.perl", "storage.type.class.pod.perl"]
+      expect(lines[1][0]).toEqual value: "Bar", scopes: ["source.perl", "comment.block.documentation.perl"]
+      expect(lines[2][0]).toEqual value: "=cut", scopes: ["source.perl", "comment.block.documentation.perl", "storage.type.class.pod.perl"]
+
+    it "does not highlight commands with leading whitespace", ->
+      {tokens} = grammar.tokenizeLine(" =pod")
+      expect(tokens[0]).toEqual value: " =pod", scopes: ["source.perl"]
+
+    it "highlights additional command parameters", ->
+      {tokens} = grammar.tokenizeLine("=head1 Heading")
+      expect(tokens[0]).toEqual value: "=head1", scopes: ["source.perl", "comment.block.documentation.perl", "storage.type.class.pod.perl"]
+      expect(tokens[1]).toEqual value: " ", scopes: ["source.perl", "comment.block.documentation.perl"]
+      expect(tokens[2]).toEqual value: "Heading", scopes: ["source.perl", "comment.block.documentation.perl", "variable.other.pod.perl"]
+
+    it "highlights formatting codes", ->
+      lines = grammar.tokenizeLines """
+        =pod
+        See L<perlpod(1)>.
+      """
+      expect(lines[1][0]).toEqual value: "See ", scopes: ["source.perl", "comment.block.documentation.perl"]
+      expect(lines[1][1]).toEqual value: "L<", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl"]
+      expect(lines[1][2]).toEqual value: "perlpod(1)", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl", "markup.underline.link.hyperlink.pod.perl"]
+      expect(lines[1][3]).toEqual value: ">", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl"]
+
+    it "highlights formatting codes in command parameters", ->
+      {tokens} = grammar.tokenizeLine("=head1 This is a B<bold heading>")
+      expect(tokens[2]).toEqual value: "This is a ", scopes: ["source.perl", "comment.block.documentation.perl", "variable.other.pod.perl"]
+      expect(tokens[3]).toEqual value: "B<", scopes: ["source.perl", "comment.block.documentation.perl", "variable.other.pod.perl", "entity.name.type.instance.pod.perl"]
+      expect(tokens[4]).toEqual value: "bold heading", scopes: ["source.perl", "comment.block.documentation.perl", "variable.other.pod.perl", "entity.name.type.instance.pod.perl", "markup.bold.pod.perl"]
+      expect(tokens[5]).toEqual value: ">", scopes: ["source.perl", "comment.block.documentation.perl", "variable.other.pod.perl", "entity.name.type.instance.pod.perl"]
+
+    it "highlights multiple angle-brackets correctly in formatting codes", ->
+      lines = grammar.tokenizeLines """
+        =pod
+        Text I<< <italic> >> Text
+      """
+      expect(lines[1][0]).toEqual value: "Text ", scopes: ["source.perl", "comment.block.documentation.perl"]
+      expect(lines[1][1]).toEqual value: "I<<", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl"]
+      expect(lines[1][2]).toEqual value: " <italic> ", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl", "markup.italic.pod.perl"]
+      expect(lines[1][3]).toEqual value: ">>", scopes: ["source.perl", "comment.block.documentation.perl", "entity.name.type.instance.pod.perl"]
+      expect(lines[1][4]).toEqual value: " Text", scopes: ["source.perl", "comment.block.documentation.perl"]
+
+    it "uses HTML highlighting in embedded HTML snippets", ->
+      lines = grammar.tokenizeLines """
+        =pod
+        =begin html
+        <b>Bold</b>
+        =end html
+      """
+      expect(lines[1][0]).toEqual value: "=begin", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "storage.type.class.pod.perl"]
+      expect(lines[1][1]).toEqual value: " ", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl"]
+      expect(lines[1][2]).toEqual value: "html", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "variable.other.pod.perl"]
+      expect(lines[2][0]).toEqual value: "<b>Bold</b>", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "text.embedded.html.basic"]
+      expect(lines[3][0]).toEqual value: "=end", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "storage.type.class.pod.perl"]
+      expect(lines[3][1]).toEqual value: " ", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl"]
+      expect(lines[3][2]).toEqual value: "html", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "variable.other.pod.perl"]
+
+    it "cuts embedded snippets off early before a terminating =cut command", ->
+      lines = grammar.tokenizeLines """
+        =pod
+        =begin html
+        <b>Bold</b>
+        =cut
+        my $var;
+      """
+      expect(lines[2][0]).toEqual value: "<b>Bold</b>", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "text.embedded.html.basic"]
+      expect(lines[3][0]).toEqual value: "=cut", scopes: ["source.perl", "comment.block.documentation.perl", "storage.type.class.pod.perl"]
+      expect(lines[4][0]).toEqual value: "my", scopes: ["source.perl", "storage.modifier.perl"]
