@@ -9,7 +9,19 @@
   't'
   'vcl'
 ]
-'firstLineMatch': '^#!.*\\bperl\\b'
+'firstLineMatch': '''(?x)
+  # Hashbang
+  ^\\#!.*\\bperl\\b
+  |
+  # Modeline
+  (?i:
+    # Emacs
+    -\\*-[^*]*(?:mode:\\s*)?\\bperl(?:\\s*;.*?)?\\s*-\\*-
+    |
+    # Vim
+    (?:vim?|ex):\\s*(?:set?.*\\s)?(?:syntax|filetype|ft)=perl\\s?(?:.*:)?
+  )
+'''
 'patterns': [
   {
     'include': '#line_comment'
