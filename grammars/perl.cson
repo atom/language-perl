@@ -11,7 +11,7 @@
 ]
 'firstLineMatch': '''(?x)
   # Hashbang
-  ^\\#!.*\\bperl\\b
+  ^\\#!.*[\\s\\/]perl(?:$|\\s)
   |
   # Modeline
   (?i:

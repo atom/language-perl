@@ -613,14 +613,40 @@ $asd\\n
 
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
-      hashbangs = """
+      valid_hashbangs = """
         #! perl -w
+        #!/usr/sbin/perl foo
+        #!/usr/bin/perl foo=bar/
+        #!/usr/sbin/perl
+        #!/usr/sbin/perl foo bar baz
         #!/usr/bin/env perl
-        #! /usr/bin/perl
+        #!/usr/bin/env bin/perl
+        #!/usr/bin/perl
+        #!/bin/perl
+        #!/usr/bin/perl --script=usr/bin
+        #! /usr/bin/env A=003 B=149 C=150 D=xzd E=base64 F=tar G=gz H=head I=tail perl
         #!\t/usr/bin/env --foo=bar perl --quu=quux
+        #! /usr/bin/perl
+        #!/usr/bin/env perl
       """
-      for line in hashbangs.split /\n/
+      for line in valid_hashbangs.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid_hashbangs = """
+        #! pearl
+        perl
+        #perl
+        \x20#!/usr/sbin/perl
+        \t#!/usr/sbin/perl
+        #!
+        #!\x20
+        #!/usr/bin/env-perl/perl-env/
+        #!/usr/bin/env-perl
+        #! /usr/binperl
+        #!\t/usr/bin/env --perl=bar
+      """
+      for line in invalid_hashbangs.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises Emacs modelines", ->
       modelines = """

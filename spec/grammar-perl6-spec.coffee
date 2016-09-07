@@ -165,14 +165,41 @@ describe "Perl 6 grammar", ->
 
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
-      hashbangs = """
-        #! perl6
+      valid_hashbangs = """
+        #! perl6 -w
+        #!/usr/sbin/perl6 foo
+        #!/usr/bin/perl6 foo=bar/
+        #!/usr/sbin/perl6
+        #!/usr/sbin/perl6 foo bar baz
         #!/usr/bin/env perl6
-        #!  /usr/bin/perl6
-        #!\t/usr/bin/env --foo=bar nqp --quu=quux
+        #!/usr/bin/env bin/perl6
+        #!/usr/bin/perl6
+        #!/bin/perl6
+        #!/usr/bin/perl6 --script=usr/bin
+        #! /usr/bin/env A=003 B=149 C=150 D=xzd E=base64 F=tar G=gz H=head I=tail perl6
+        #!\t/usr/bin/env --foo=bar perl6 --quu=quux
+        #! /usr/bin/perl6
+        #!/usr/bin/env perl6
       """
-      for line in hashbangs.split /\n/
+      for line in valid_hashbangs.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid_hashbangs = """
+        #! pearl6
+        #!/bin/perl 6
+        perl6
+        #perl6
+        \x20#!/usr/sbin/perl6
+        \t#!/usr/sbin/perl6
+        #!
+        #!\x20
+        #!/usr/bin/env
+        #!/usr/bin/env-perl6
+        #! /usr/binperl6
+        #!\t/usr/bin/env --perl6=bar
+      """
+      for line in invalid_hashbangs.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises the Perl6 pragma", ->
       line = "use v6;"
