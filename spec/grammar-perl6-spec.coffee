@@ -161,3 +161,43 @@ describe "Perl 6 grammar", ->
           'source.perl6'
           'comment.line.number-sign.perl6'
         ]
+
+
+  describe "firstLineMatch", ->
+    it "recognises interpreter directives", ->
+      hashbangs = """
+        #! perl6
+        #!/usr/bin/env perl6
+        #!  /usr/bin/perl6
+        #!\t/usr/bin/env --foo=bar nqp --quu=quux
+      """
+      for line in hashbangs.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+    it "recognises the Perl6 pragma", ->
+      line = "use v6;"
+      expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+    it "recognises Emacs modelines", ->
+      modelines = """
+        /* -*-perl6-*- */
+        // -*- PERL6 -*-
+        /* -*- mode:perl6 -*- */
+        // -*- font:bar;mode:Perl6 -*-
+        " -*-foo:bar;mode:Perl6;bar:foo-*- ";
+        "-*- font:x;foo : bar ; mode : pErL6 ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
+      """
+      for line in modelines.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+    it "recognises Vim modelines", ->
+      modelines = """
+        // vim: set ft=perl6:
+        // vim: set filetype=Perl6:
+        /* vim: ft=perl6 */
+        // vim: syntax=pERl6
+        /* vim: se syntax=PERL6: */
+        /* ex: syntax=perl6 */
+      """
+      for line in modelines.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()

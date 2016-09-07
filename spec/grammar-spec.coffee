@@ -609,3 +609,39 @@ $asd\\n
       expect(tokens[3]).toEqual value: "; ", scopes: ["source.perl"]
       expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
       expect(tokens[5]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
+
+
+  describe "firstLineMatch", ->
+    it "recognises interpreter directives", ->
+      hashbangs = """
+        #! perl -w
+        #!/usr/bin/env perl
+        #! /usr/bin/perl
+        #!\t/usr/bin/env --foo=bar perl --quu=quux
+      """
+      for line in hashbangs.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+    it "recognises Emacs modelines", ->
+      modelines = """
+        /* -*-perl-*- */
+        // -*- PERL -*-
+        /* -*- mode:perl -*- */
+        // -*- font:bar;mode:Perl -*-
+        " -*-foo:bar;mode:Perl;bar:foo-*- ";
+        "-*- font:x;foo : bar ; mode : pErL ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
+      """
+      for line in modelines.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+    it "recognises Vim modelines", ->
+      modelines = """
+        // vim: set ft=perl:
+        // vim: set filetype=Perl:
+        /* vim: ft=perl */
+        // vim: syntax=pERl
+        /* vim: se syntax=PERL: */
+        /* ex: syntax=perl */
+      """
+      for line in modelines.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
