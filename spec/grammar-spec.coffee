@@ -614,6 +614,7 @@ $asd\\n
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
       valid_hashbangs = """
+        #!perl -w
         #! perl -w
         #!/usr/sbin/perl foo
         #!/usr/bin/perl foo=bar/
@@ -634,6 +635,7 @@ $asd\\n
 
       invalid_hashbangs = """
         #! pearl
+        #!=perl
         perl
         #perl
         \x20#!/usr/sbin/perl
