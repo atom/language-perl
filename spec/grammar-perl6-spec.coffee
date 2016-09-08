@@ -166,6 +166,7 @@ describe "Perl 6 grammar", ->
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
       valid = """
+        #!perl6 -w
         #! perl6 -w
         #!/usr/sbin/perl6 foo
         #!/usr/bin/perl6 foo=bar/
