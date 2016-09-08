@@ -165,7 +165,7 @@ describe "Perl 6 grammar", ->
 
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
-      valid_hashbangs = """
+      valid = """
         #! perl6 -w
         #!/usr/sbin/perl6 foo
         #!/usr/bin/perl6 foo=bar/
@@ -181,10 +181,10 @@ describe "Perl 6 grammar", ->
         #! /usr/bin/perl6
         #!/usr/bin/env perl6
       """
-      for line in valid_hashbangs.split /\n/
+      for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
 
-      invalid_hashbangs = """
+      invalid = """
         #! pearl6
         #!/bin/perl 6
         perl6
@@ -198,7 +198,7 @@ describe "Perl 6 grammar", ->
         #! /usr/binperl6
         #!\t/usr/bin/env --perl6=bar
       """
-      for line in invalid_hashbangs.split /\n/
+      for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises the Perl6 pragma", ->
@@ -207,15 +207,40 @@ describe "Perl 6 grammar", ->
 
     it "recognises Emacs modelines", ->
       modelines = """
+        #-*-perl6-*-
+        #-*-mode:perl6-*-
         /* -*-perl6-*- */
         // -*- PERL6 -*-
         /* -*- mode:perl6 -*- */
         // -*- font:bar;mode:Perl6 -*-
+        // -*- font:bar;mode:Perl6;foo:bar; -*-
+        // -*-font:mode;mode:perl6-*-
         " -*-foo:bar;mode:Perl6;bar:foo-*- ";
+        " -*-font-mode:foo;mode:Perl6;foo-bar:quux-*-"
+        "-*-font:x;foo:bar; mode : pErL6;bar:foo;foooooo:baaaaar;fo:ba;-*-";
         "-*- font:x;foo : bar ; mode : pErL6 ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
       """
       for line in modelines.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        /* --*perl6-*- */
+        /* -*-- perl6 -*-
+        /* -*- -- perl6 -*-
+        /* -*- perl6 -;- -*-
+        // -*- iPERL6 -*-
+        // -*- perl 6 -*-
+        // -*- perl6-stuff -*-
+        /* -*- model:perl6 -*-
+        /* -*- indent-mode:perl6 -*-
+        // -*- font:mode;Perl6 -*-
+        // -*- mode: -*- Perl6
+        // -*- mode: grok-with-perl6 -*-
+        // -*-font:mode;mode:perl6--*-
+      """
+
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises Vim modelines", ->
       modelines = """

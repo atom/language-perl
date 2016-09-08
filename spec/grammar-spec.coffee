@@ -613,7 +613,7 @@ $asd\\n
 
   describe "firstLineMatch", ->
     it "recognises interpreter directives", ->
-      valid_hashbangs = """
+      valid = """
         #!perl -w
         #! perl -w
         #!/usr/sbin/perl foo
@@ -630,10 +630,10 @@ $asd\\n
         #! /usr/bin/perl
         #!/usr/bin/env perl
       """
-      for line in valid_hashbangs.split /\n/
+      for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
 
-      invalid_hashbangs = """
+      invalid = """
         #! pearl
         #!=perl
         perl
@@ -647,23 +647,47 @@ $asd\\n
         #! /usr/binperl
         #!\t/usr/bin/env --perl=bar
       """
-      for line in invalid_hashbangs.split /\n/
+      for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises Emacs modelines", ->
-      modelines = """
+      valid = """
+        #-*-perl-*-
+        #-*-mode:perl-*-
         /* -*-perl-*- */
         // -*- PERL -*-
         /* -*- mode:perl -*- */
         // -*- font:bar;mode:Perl -*-
+        // -*- font:bar;mode:Perl;foo:bar; -*-
+        // -*-font:mode;mode:perl-*-
         " -*-foo:bar;mode:Perl;bar:foo-*- ";
+        " -*-font-mode:foo;mode:Perl;foo-bar:quux-*-"
+        "-*-font:x;foo:bar; mode : pErL;bar:foo;foooooo:baaaaar;fo:ba;-*-";
         "-*- font:x;foo : bar ; mode : pErL ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
       """
-      for line in modelines.split /\n/
+      for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
 
+      invalid = """
+        /* --*perl-*- */
+        /* -*-- perl -*-
+        /* -*- -- perl -*-
+        /* -*- perl -;- -*-
+        // -*- iPERL -*-
+        // -*- perl-stuff -*-
+        /* -*- model:perl -*-
+        /* -*- indent-mode:perl -*-
+        // -*- font:mode;Perl -*-
+        // -*- mode: -*- Perl
+        // -*- mode: grok-with-perl -*-
+        // -*-font:mode;mode:perl--*-
+      """
+
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
     it "recognises Vim modelines", ->
-      modelines = """
+      valid = """
         // vim: set ft=perl:
         // vim: set filetype=Perl:
         /* vim: ft=perl */
@@ -671,5 +695,5 @@ $asd\\n
         /* vim: se syntax=PERL: */
         /* ex: syntax=perl */
       """
-      for line in modelines.split /\n/
+      for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
