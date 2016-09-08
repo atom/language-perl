@@ -682,18 +682,50 @@ $asd\\n
         // -*- mode: grok-with-perl -*-
         // -*-font:mode;mode:perl--*-
       """
-
       for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises Vim modelines", ->
       valid = """
-        // vim: set ft=perl:
-        // vim: set filetype=Perl:
-        /* vim: ft=perl */
-        // vim: syntax=pERl
-        /* vim: se syntax=PERL: */
-        /* ex: syntax=perl */
+        vim: se filetype=perl:
+        # vim: se ft=perl:
+        # vim: set ft=perl:
+        # vim: set filetype=Perl:
+        # vim: ft=perl
+        # vim: syntax=pERl
+        # vim: se syntax=PERL:
+        # ex: syntax=perl
+        # vim:ft=perl
+        # vim600: ft=perl
+        # vim>600: set ft=perl:
+        # vi:noai:sw=3 ts=6 ft=perl
+        # vi::::::::::noai:::::::::::: ft=perl
+        # vim:ts=4:sts=4:sw=4:noexpandtab:ft=perl
+        # vi:: noai : : : : sw   =3 ts   =6 ft  =perl
+        # vim: ts=4: pi sts=4: ft=perl: noexpandtab: sw=4:
+        # vim: ts=4 sts=4: ft=perl noexpandtab:
+        # vim:noexpandtab sts=4 ft=perl ts=4
+        # vim:noexpandtab:ft=perl
+        # vim:ts=4:sts=4 ft=perl:noexpandtab:\x20
+        # vim:noexpandtab titlestring=hi\|there\\\\ ft=perl ts=4
       """
       for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        ex: se filetype=perl:
+        _vi: se filetype=perl:
+         vi: se filetype=perl
+        # vim set ft=perlo
+        # vim: soft=perl
+        # vim: hairy-syntax=perl:
+        # vim set ft=perl:
+        # vim: setft=perl:
+        # vim: se ft=perl backupdir=tmp
+        # vim: set ft=perl set cmdheight=1
+        # vim:noexpandtab sts:4 ft:perl ts:4
+        # vim:noexpandtab titlestring=hi\\|there\\ ft=perl ts=4
+        # vim:noexpandtab titlestring=hi\\|there\\\\\\ ft=perl ts=4
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()

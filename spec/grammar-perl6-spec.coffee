@@ -244,13 +244,46 @@ describe "Perl 6 grammar", ->
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
 
     it "recognises Vim modelines", ->
-      modelines = """
-        // vim: set ft=perl6:
-        // vim: set filetype=Perl6:
-        /* vim: ft=perl6 */
-        // vim: syntax=pERl6
-        /* vim: se syntax=PERL6: */
-        /* ex: syntax=perl6 */
+      valid = """
+        vim: se filetype=perl6:
+        # vim: se ft=perl6:
+        # vim: set ft=perl6:
+        # vim: set filetype=Perl6:
+        # vim: ft=perl6
+        # vim: syntax=pERl6
+        # vim: se syntax=PERL6:
+        # ex: syntax=perl6
+        # vim:ft=perl6
+        # vim600: ft=perl6
+        # vim>600: set ft=perl6:
+        # vi:noai:sw=3 ts=6 ft=perl6
+        # vi::::::::::noai:::::::::::: ft=perl6
+        # vim:ts=4:sts=4:sw=4:noexpandtab:ft=perl6
+        # vi:: noai : : : : sw   =3 ts   =6 ft  =perl6
+        # vim: ts=4: pi sts=4: ft=perl6: noexpandtab: sw=4:
+        # vim: ts=4 sts=4: ft=perl6 noexpandtab:
+        # vim:noexpandtab sts=4 ft=perl6 ts=4
+        # vim:noexpandtab:ft=perl6
+        # vim:ts=4:sts=4 ft=perl6:noexpandtab:\x20
+        # vim:noexpandtab titlestring=hi\|there\\\\ ft=perl6 ts=4
       """
-      for line in modelines.split /\n/
+      for line in valid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        ex: se filetype=perl6:
+        _vi: se filetype=perl6:
+         vi: se filetype=perl6
+        # vim set ft=perl6o
+        # vim: soft=perl6
+        # vim: hairy-syntax=perl6:
+        # vim set ft=perl6:
+        # vim: setft=perl6:
+        # vim: se ft=perl6 backupdir=tmp
+        # vim: set ft=perl6 set cmdheight=1
+        # vim:noexpandtab sts:4 ft:perl6 ts:4
+        # vim:noexpandtab titlestring=hi\\|there\\ ft=perl6 ts=4
+        # vim:noexpandtab titlestring=hi\\|there\\\\\\ ft=perl6 ts=4
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
