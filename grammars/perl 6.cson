@@ -6,7 +6,26 @@
   'pm6'
   'nqp'
 ]
-'firstLineMatch': '(^#!.*\\b(perl6|nqp)\\b)|use\\s+v6'
+'firstLineMatch': '''(?x)
+  # Hashbang
+  ^\\#!.*(?:\\s|\\/|(?<=!)\\b)(?:perl6|nqp)(?:$|\\s)
+  |
+  # Perl 6 pragma
+  \\buse\\s+v6\\b
+  |
+  # Modeline
+  (?i:
+    # Emacs
+    -\\*-(?:(?:(?!mode\\s*:)[^:;]+:[^:;]+;)*\\s*mode\\s*:)?\\s*
+      perl6
+    \\s*(?:;[^:;]+:[^:;]+?)*;?\\s*-\\*-
+    |
+    # Vim
+    (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|(?!^)\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+      perl6
+    (?=\\s|:|$)
+  )
+'''
 'patterns': [
   {
     'begin': '^=begin'

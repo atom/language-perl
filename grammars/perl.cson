@@ -9,7 +9,23 @@
   't'
   'vcl'
 ]
-'firstLineMatch': '^#!.*\\bperl\\b'
+'firstLineMatch': '''(?x)
+  # Hashbang
+  ^\\#!.*(?:\\s|\\/|(?<=!)\\b)perl(?:$|\\s)
+  |
+  # Modeline
+  (?i:
+    # Emacs
+    -\\*-(?:(?:(?!mode\\s*:)[^:;]+:[^:;]+;)*\\s*mode\\s*:)?\\s*
+      perl
+    \\s*(?:;[^:;]+:[^:;]+?)*;?\\s*-\\*-
+    |
+    # Vim
+    (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|(?!^)\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+      perl
+    (?=\\s|:|$)
+  )
+'''
 'patterns': [
   {
     'include': '#line_comment'
