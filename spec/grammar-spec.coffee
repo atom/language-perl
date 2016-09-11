@@ -685,3 +685,122 @@ $asd\\n
       expect(lines[2][0]).toEqual value: "<b>Bold</b>", scopes: ["source.perl", "comment.block.documentation.perl", "meta.embedded.pod.perl", "text.embedded.html.basic"]
       expect(lines[3][0]).toEqual value: "=cut", scopes: ["source.perl", "comment.block.documentation.perl", "storage.type.class.pod.perl"]
       expect(lines[4][0]).toEqual value: "my", scopes: ["source.perl", "storage.modifier.perl"]
+
+  describe "firstLineMatch", ->
+    it "recognises interpreter directives", ->
+      valid = """
+        #!perl -w
+        #! perl -w
+        #!/usr/sbin/perl foo
+        #!/usr/bin/perl foo=bar/
+        #!/usr/sbin/perl
+        #!/usr/sbin/perl foo bar baz
+        #!/usr/bin/env perl
+        #!/usr/bin/env bin/perl
+        #!/usr/bin/perl
+        #!/bin/perl
+        #!/usr/bin/perl --script=usr/bin
+        #! /usr/bin/env A=003 B=149 C=150 D=xzd E=base64 F=tar G=gz H=head I=tail perl
+        #!\t/usr/bin/env --foo=bar perl --quu=quux
+        #! /usr/bin/perl
+        #!/usr/bin/env perl
+      """
+      for line in valid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        #! pearl
+        #!=perl
+        perl
+        #perl
+        \x20#!/usr/sbin/perl
+        \t#!/usr/sbin/perl
+        #!
+        #!\x20
+        #!/usr/bin/env-perl/perl-env/
+        #!/usr/bin/env-perl
+        #! /usr/binperl
+        #!\t/usr/bin/env --perl=bar
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+    it "recognises Emacs modelines", ->
+      valid = """
+        #-*-perl-*-
+        #-*-mode:perl-*-
+        /* -*-perl-*- */
+        // -*- PERL -*-
+        /* -*- mode:perl -*- */
+        // -*- font:bar;mode:Perl -*-
+        // -*- font:bar;mode:Perl;foo:bar; -*-
+        // -*-font:mode;mode:perl-*-
+        " -*-foo:bar;mode:Perl;bar:foo-*- ";
+        " -*-font-mode:foo;mode:Perl;foo-bar:quux-*-"
+        "-*-font:x;foo:bar; mode : pErL;bar:foo;foooooo:baaaaar;fo:ba;-*-";
+        "-*- font:x;foo : bar ; mode : pErL ; bar : foo ; foooooo:baaaaar;fo:ba-*-";
+      """
+      for line in valid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        /* --*perl-*- */
+        /* -*-- perl -*-
+        /* -*- -- perl -*-
+        /* -*- perl -;- -*-
+        // -*- iPERL -*-
+        // -*- perl-stuff -*-
+        /* -*- model:perl -*-
+        /* -*- indent-mode:perl -*-
+        // -*- font:mode;Perl -*-
+        // -*- mode: -*- Perl
+        // -*- mode: grok-with-perl -*-
+        // -*-font:mode;mode:perl--*-
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+    it "recognises Vim modelines", ->
+      valid = """
+        vim: se filetype=perl:
+        # vim: se ft=perl:
+        # vim: set ft=perl:
+        # vim: set filetype=Perl:
+        # vim: ft=perl
+        # vim: syntax=pERl
+        # vim: se syntax=PERL:
+        # ex: syntax=perl
+        # vim:ft=perl
+        # vim600: ft=perl
+        # vim>600: set ft=perl:
+        # vi:noai:sw=3 ts=6 ft=perl
+        # vi::::::::::noai:::::::::::: ft=perl
+        # vim:ts=4:sts=4:sw=4:noexpandtab:ft=perl
+        # vi:: noai : : : : sw   =3 ts   =6 ft  =perl
+        # vim: ts=4: pi sts=4: ft=perl: noexpandtab: sw=4:
+        # vim: ts=4 sts=4: ft=perl noexpandtab:
+        # vim:noexpandtab sts=4 ft=perl ts=4
+        # vim:noexpandtab:ft=perl
+        # vim:ts=4:sts=4 ft=perl:noexpandtab:\x20
+        # vim:noexpandtab titlestring=hi\|there\\\\ ft=perl ts=4
+      """
+      for line in valid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).not.toBeNull()
+
+      invalid = """
+        ex: se filetype=perl:
+        _vi: se filetype=perl:
+         vi: se filetype=perl
+        # vim set ft=perlo
+        # vim: soft=perl
+        # vim: hairy-syntax=perl:
+        # vim set ft=perl:
+        # vim: setft=perl:
+        # vim: se ft=perl backupdir=tmp
+        # vim: set ft=perl set cmdheight=1
+        # vim:noexpandtab sts:4 ft:perl ts:4
+        # vim:noexpandtab titlestring=hi\\|there\\ ft=perl ts=4
+        # vim:noexpandtab titlestring=hi\\|there\\\\\\ ft=perl ts=4
+      """
+      for line in invalid.split /\n/
+        expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
