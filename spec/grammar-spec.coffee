@@ -76,6 +76,13 @@ describe "Perl grammar", ->
       expect(tokens[4]).toEqual value: "m", scopes: ["source.perl", "constant.other.bareword.perl"]
       expect(tokens[5]).toEqual value: "}", scopes: ["source.perl"]
 
+    it "does not treat '#' as a comment in regex match", ->
+      {tokens} = grammar.tokenizeLine("$asd =~ s#asd#foo#;")
+      expect(tokens[3]).toEqual value: "s", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl", "support.function.perl"]
+      expect(tokens[4]).toEqual value: "#", scopes: ["source.perl", "string.regexp.replaceXXX.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(tokens[6]).toEqual value: "#", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+      expect(tokens[8]).toEqual value: "#", scopes: ["source.perl", "string.regexp.replaceXXX.format.simple_delimiter.perl", "punctuation.definition.string.perl"]
+
   describe "when a regexp find tokenizes", ->
     it "works with all bracket/seperator variations", ->
       {tokens} = grammar.tokenizeLine(" =~ /text/acdegilmnoprsux;")
