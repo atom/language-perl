@@ -798,6 +798,10 @@
     'name': 'keyword.operator.comparison.perl'
   }
   {
+    'match': '(<<|>>)'
+    'name': 'keyword.operator.bitwise.perl'
+  }
+  {
     'begin': '(((<<) *"HTML"))(.*)\\n?'
     'captures':
       '1':
