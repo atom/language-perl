@@ -607,6 +607,51 @@ $asd\\n
       expect(lines[2][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
       expect(lines[2][3]).toEqual value: " ", scopes: ["source.perl"]
 
+  describe "when a variable tokenizes", ->
+    it "highlights its type separately", ->
+      lines = grammar.tokenizeLines("""my $scalar;
+      $scalar
+      @array
+      %hash
+      my $array_ref = \\@array;
+      my $hash_ref = \\%hash;
+      my @array = @$array_ref;
+      my %hash = %$hash_ref;
+      my @n = sort {$a <=> $b} @m;
+      """)
+      expect(lines[0][2]).toEqual value: "$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[0][3]).toEqual value: "scalar", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[1][0]).toEqual value: "$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[1][1]).toEqual value: "scalar", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[2][0]).toEqual value: "@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[2][1]).toEqual value: "array", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[3][0]).toEqual value: "%", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[3][1]).toEqual value: "hash", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[4][2]).toEqual value: "$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[4][3]).toEqual value: "array_ref", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[4][5]).toEqual value: "\\@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[4][6]).toEqual value: "array", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[5][2]).toEqual value: "$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[5][3]).toEqual value: "hash_ref", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[5][5]).toEqual value: "\\%", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[5][6]).toEqual value: "hash", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[6][2]).toEqual value: "@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[6][3]).toEqual value: "array", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[6][5]).toEqual value: "@$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[6][6]).toEqual value: "array_ref", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[7][2]).toEqual value: "%", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[7][3]).toEqual value: "hash", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[7][5]).toEqual value: "%$", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[7][6]).toEqual value: "hash_ref", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[8][2]).toEqual value: "@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[8][3]).toEqual value: "n", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+      expect(lines[8][7]).toEqual value: "$", scopes: ["source.perl", "variable.other.predefined.perl", "punctuation.definition.variable.perl"]
+      expect(lines[8][8]).toEqual value: "a", scopes: ["source.perl", "variable.other.predefined.perl"]
+      expect(lines[8][12]).toEqual value: "$", scopes: ["source.perl", "variable.other.predefined.perl", "punctuation.definition.variable.perl"]
+      expect(lines[8][13]).toEqual value: "b", scopes: ["source.perl", "variable.other.predefined.perl"]
+      expect(lines[8][15]).toEqual value: "@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(lines[8][16]).toEqual value: "m", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+
   describe "when package to tokenizes", ->
     it "does not highlight semicolon in package name", ->
       {tokens} = grammar.tokenizeLine("package Test::ASD; #this is my new class")

@@ -2107,7 +2107,7 @@
         'captures':
           '1':
             'name': 'punctuation.definition.variable.perl'
-        'match': '([\\$\\@\\%](#)?)([a-zA-Zx7f-xff\\$]|::)([a-zA-Z0-9_x7f-xff\\$]|::)*\\b'
+        'match': '((\\$|@\\$|\\\\@|@|%\\$|\\\\%|%)(#)?)([a-zA-Zx7f-xff\\$]|::)([a-zA-Z0-9_x7f-xff\\$]|::)*\\b'
         'name': 'variable.other.readwrite.global.perl'
       }
       {
