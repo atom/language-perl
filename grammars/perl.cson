@@ -51,6 +51,9 @@
     'include': '#variable'
   }
   {
+    'include': '#numbers'
+  }
+  {
     'applyEndPatternLast': 1
     'begin': '\\b(?=qr\\s*[^\\s\\w])'
     'comment': 'string.regexp.compile.perl'
@@ -1951,6 +1954,39 @@
       }
       {
         'include': '#nested_parens_interpolated'
+      }
+    ]
+  'numbers':
+    'patterns': [
+      {
+        'match': '(?:\\b\\d+(?:(\\.)\\d*)?|(?<!\\.)\\B(\\.)\\d+)[eE](?:[-+\\d]\\d*(?:(\\.)\\d*)?)?'
+        'captures':
+          '0':
+            'name': 'constant.numeric.exponential.perl'
+          '1':
+            'name': 'punctuation.delimiter.decimal.period.perl'
+          '2':
+            'name': 'punctuation.delimiter.decimal.period.perl'
+          '3':
+            'name': 'punctuation.delimiter.decimal.period.perl'
+      }
+      {
+        'match': '\\b0[xX][\\da-fA-F]*'
+        'name': 'constant.numeric.hexadecimal.perl'
+      }
+      {
+        'match': '\\b0[bB][01]*'
+        'name': 'constant.numeric.binary.perl'
+      }
+      {
+        'match': '\\b\\d+(?:(\\.)\\d*(?!\\.)\\d?)?|(?<!\\.)\\B(\\.)\\d+'
+        'captures':
+          '0':
+            'name': 'constant.numeric.decimal.perl'
+          '1':
+            'name': 'punctuation.delimiter.decimal.period.perl'
+          '2':
+            'name': 'punctuation.delimiter.decimal.period.perl'
       }
     ]
   'pod':

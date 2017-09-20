@@ -184,10 +184,6 @@ describe "Perl grammar", ->
       expect(lines[2][0]).toEqual value: "/", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl"]
       expect(lines[2][1]).toEqual value: "x", scopes: ["source.perl", "string.regexp.find.perl", "punctuation.definition.string.perl", "keyword.control.regexp-option.perl"]
 
-    it "does not highlight a divide operation", ->
-      {tokens} = grammar.tokenizeLine("my $foo = scalar(@bar)/2;")
-      expect(tokens[9]).toEqual value: ")/2;", scopes: ["source.perl"]
-
     it "works in a if", ->
       {tokens} = grammar.tokenizeLine("if (/ hello /i) {}")
       expect(tokens[1]).toEqual value: " (", scopes: ["source.perl"]
@@ -594,6 +590,120 @@ $asd\\n
 ;""")
       expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
 
+  describe "when a number tokenizes", ->
+    it "highlights decimals", ->
+      lines = grammar.tokenizeLines("""0
+      0.
+      .0
+      0.0
+      """)
+      expect(lines[0][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.decimal.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[2][0]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.decimal.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[2][1]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[3][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[3][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.decimal.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[3][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+
+    it "highlights exponentials", ->
+      lines = grammar.tokenizeLines("""0e
+      0.e
+      .0e
+      0.0e
+      0E0
+      0e0.
+      0e0.0
+      0e-0
+      0E-.0
+      0e-0.0
+      """)
+      expect(lines[0][0]).toEqual value: "0e", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[1][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[1][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[1][2]).toEqual value: "e", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[2][0]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[2][1]).toEqual value: "0e", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[3][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[3][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[3][2]).toEqual value: "0e", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[4][0]).toEqual value: "0E0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[5][0]).toEqual value: "0e0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[5][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[6][0]).toEqual value: "0e0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[6][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[6][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[7][0]).toEqual value: "0e-0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[8][0]).toEqual value: "0E-", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[8][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[8][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[9][0]).toEqual value: "0e-0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[9][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[9][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+
+    it "highlights hexadecimals", ->
+      lines = grammar.tokenizeLines("""0x
+      0x0e0
+      """)
+      expect(lines[0][0]).toEqual value: "0x", scopes: ["source.perl", "constant.numeric.hexadecimal.perl"]
+      expect(lines[1][0]).toEqual value: "0x0e0", scopes: ["source.perl", "constant.numeric.hexadecimal.perl"]
+
+
+    it "highlights binaries", ->
+      lines = grammar.tokenizeLines("""0b
+      0b10
+      """)
+      expect(lines[0][0]).toEqual value: "0b", scopes: ["source.perl", "constant.numeric.binary.perl"]
+      expect(lines[1][0]).toEqual value: "0b10", scopes: ["source.perl", "constant.numeric.binary.perl"]
+
+    it "does not highlight decimals as hexadecimals", ->
+      lines = grammar.tokenizeLines("""00x
+      00xa
+      """)
+      expect(lines[0][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[0][1]).toEqual value: "x", scopes: ["source.perl"]
+      expect(lines[1][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][1]).toEqual value: "xa", scopes: ["source.perl"]
+
+    it "does not highlight decimals as binaries", ->
+      lines = grammar.tokenizeLines("""00b
+      00b1
+      """)
+      expect(lines[0][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[0][1]).toEqual value: "b", scopes: ["source.perl"]
+      expect(lines[1][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][1]).toEqual value: "b1", scopes: ["source.perl"]
+
+    it "does not highlight periods between numbers", ->
+      lines = grammar.tokenizeLines("""0.0.0.0
+      0..0
+      0...0
+      0e.0
+      0e-.0.0
+      """)
+      expect(lines[0][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[0][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.decimal.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[0][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[0][3]).toEqual value: ".", scopes: ["source.perl"]
+      expect(lines[0][4]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[0][5]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.decimal.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[0][6]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[1][1]).toEqual value: "..", scopes: ["source.perl"]
+      expect(lines[1][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[2][0]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[2][1]).toEqual value: "...", scopes: ["source.perl"]
+      expect(lines[2][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[3][0]).toEqual value: "0e", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[3][1]).toEqual value: ".", scopes: ["source.perl"]
+      expect(lines[3][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+      expect(lines[4][0]).toEqual value: "0e-", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[4][1]).toEqual value: ".", scopes: ["source.perl", "constant.numeric.exponential.perl", "punctuation.delimiter.decimal.period.perl"]
+      expect(lines[4][2]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.exponential.perl"]
+      expect(lines[4][3]).toEqual value: ".", scopes: ["source.perl"]
+      expect(lines[4][4]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
+
+
   describe "when a hash variable tokenizes", ->
     it "does not highlight whitespace beside a key as a constant", ->
       lines = grammar.tokenizeLines("""my %hash = (
@@ -651,6 +761,13 @@ $asd\\n
       expect(lines[8][13]).toEqual value: "b", scopes: ["source.perl", "variable.other.predefined.perl"]
       expect(lines[8][15]).toEqual value: "@", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
       expect(lines[8][16]).toEqual value: "m", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
+
+    it "does not highlight numbers separately", ->
+      {tokens} = grammar.tokenizeLine("$0 %a0")
+      expect(tokens[0]).toEqual value: "$", scopes: ["source.perl", "variable.other.predefined.program-name.perl", "punctuation.definition.variable.perl"]
+      expect(tokens[1]).toEqual value: "0", scopes: ["source.perl", "variable.other.predefined.program-name.perl"]
+      expect(tokens[3]).toEqual value: "%", scopes: ["source.perl", "variable.other.readwrite.global.perl", "punctuation.definition.variable.perl"]
+      expect(tokens[4]).toEqual value: "a0", scopes: ["source.perl", "variable.other.readwrite.global.perl"]
 
   describe "when package to tokenizes", ->
     it "does not highlight semicolon in package name", ->
