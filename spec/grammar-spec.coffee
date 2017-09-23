@@ -686,11 +686,24 @@ $asd\\n
       expect(tokens[3]).toEqual value: ".", scopes: ["source.perl", "keyword.operator.concatenation.perl"]
 
     it "highlights repetition operators", ->
-      {tokens} = grammar.tokenizeLine("'x' x 3")
-      expect(tokens[0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
-      expect(tokens[1]).toEqual value: "x", scopes: ["source.perl", "string.quoted.single.perl"]
-      expect(tokens[2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
-      expect(tokens[4]).toEqual value: "x", scopes: ["source.perl", "keyword.operator.repetition.perl"]
+      lines = grammar.tokenizeLines("""'x' x 3
+      'x'x3
+      'x'xx
+      axx
+      """)
+      expect(lines[0][0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(lines[0][1]).toEqual value: "x", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(lines[0][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(lines[0][4]).toEqual value: "x", scopes: ["source.perl", "keyword.operator.repetition.perl"]
+      expect(lines[1][0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(lines[1][1]).toEqual value: "x", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(lines[1][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(lines[1][3]).toEqual value: "x", scopes: ["source.perl", "keyword.operator.repetition.perl"]
+      expect(lines[2][0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(lines[2][1]).toEqual value: "x", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(lines[2][2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(lines[2][3]).toEqual value: "xx", scopes: ["source.perl"]
+      expect(lines[3][0]).toEqual value: "axx", scopes: ["source.perl"]
 
     it "highlights range operators", ->
       {tokens} = grammar.tokenizeLine(".. ... 0..1 3...9")
@@ -804,7 +817,7 @@ $asd\\n
       00xa
       """)
       expect(lines[0][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
-      expect(lines[0][1]).toEqual value: "x", scopes: ["source.perl", "keyword.operator.repetition.perl"]
+      expect(lines[0][1]).toEqual value: "x", scopes: ["source.perl"]
       expect(lines[1][0]).toEqual value: "00", scopes: ["source.perl", "constant.numeric.decimal.perl"]
       expect(lines[1][1]).toEqual value: "xa", scopes: ["source.perl"]
 

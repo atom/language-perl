@@ -2066,7 +2066,7 @@
         'name': 'keyword.operator.concatenation.perl'
       }
       {
-        'match': 'x'
+        'match': '\\bx(?![a-zA-Z_])'
         'name': 'keyword.operator.repetition.perl'
       }
       {
