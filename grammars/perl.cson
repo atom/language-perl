@@ -795,6 +795,10 @@
     'include': '#operators'
   }
   {
+    'match': '( << | >> )'
+    'name': 'keyword.operator.bitwise.perl'
+  }
+  {
     'begin': '(((<<) *"HTML"))(.*)\\n?'
     'captures':
       '1':

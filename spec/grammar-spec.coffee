@@ -361,6 +361,14 @@ describe "Perl grammar", ->
       expect(tokens[3]).toEqual value: "qx()", scopes: ["source.perl"]
       expect(tokens[4]).toEqual value: ";", scopes: ["source.perl", "punctuation.terminator.semicolon.perl"]
 
+  describe "tokenizes bitwise operators", ->
+    it "does highlight operators", ->
+      {tokens} = grammar.tokenizeLine(" << ")
+      expect(tokens[0]).toEqual value: " << ", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      {tokens} = grammar.tokenizeLine(" >> ")
+      expect(tokens[0]).toEqual value: " >> ", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+
+
   describe "when a function call tokenizes", ->
     it "does not highlight calls which looks like a regexp", ->
       {tokens} = grammar.tokenizeLine("s_ttest($key,\"t_storage\",$single_task);")
