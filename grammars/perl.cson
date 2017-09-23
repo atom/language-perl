@@ -781,6 +781,9 @@
     ]
   }
   {
+    'include': '#separators'
+  }
+  {
     'match': '(?<!->)\\b(continue|default|die|do|else|elsif|exit|for|foreach|given|goto|if|last|next|redo|return|select|unless|until|wait|when|while|switch|case|require|use|eval)\\b'
     'name': 'keyword.control.perl'
   }
@@ -2069,6 +2072,29 @@
       {
         'match': '[?:]'
         'name': 'keyword.operator.ternary.perl'
+      }
+    ]
+  'separators':
+    'patterns': [
+      {
+        'match': ';'
+        'name': 'punctuation.terminator.semicolon.perl'
+      }
+      {
+        'match': ','
+        'name': 'punctuation.separator.comma.perl'
+      }
+      {
+        'match': '::'
+        'name': 'punctuation.separator.colon.perl'
+      }
+      {
+        'match': '->'
+        'name': 'punctuation.separator.arrow.perl'
+      }
+      {
+        'match': '=>'
+        'name': 'punctuation.separator.key-value.perl'
       }
     ]
   'pod':

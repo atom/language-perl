@@ -704,6 +704,33 @@ $asd\\n
       expect(tokens[3]).toEqual value: "<", scopes: ["source.perl", "keyword.operator.readline.perl"]
       expect(tokens[6]).toEqual value: ">", scopes: ["source.perl", "keyword.operator.readline.perl"]
 
+  describe "when a separator tokenizes", ->
+    it "highlights semicolons", ->
+      {tokens} = grammar.tokenizeLine("$var;")
+      expect(tokens[2]).toEqual value: ";", scopes: ["source.perl", "punctuation.terminator.semicolon.perl"]
+
+    it "highlights commas", ->
+      lines = grammar.tokenizeLines("""[1, 2]
+      ($a, $b)
+      3,%c
+      """)
+      expect(lines[0][2]).toEqual value: ",", scopes: ["source.perl", "punctuation.separator.comma.perl"]
+      expect(lines[1][3]).toEqual value: ",", scopes: ["source.perl", "punctuation.separator.comma.perl"]
+      expect(lines[2][1]).toEqual value: ",", scopes: ["source.perl", "punctuation.separator.comma.perl"]
+
+    it "highlights double colons", ->
+      {tokens} = grammar.tokenizeLine("A::B")
+      expect(tokens[1]).toEqual value: "::", scopes: ["source.perl", "punctuation.separator.colon.perl"]
+
+    it "highlights arrows", ->
+      {tokens} = grammar.tokenizeLine("$abc->d")
+      expect(tokens[2]).toEqual value: "->", scopes: ["source.perl", "punctuation.separator.arrow.perl"]
+
+    it "highlights fat arrows", ->
+      {tokens} = grammar.tokenizeLine("key => 'value'")
+      expect(tokens[2]).toEqual value: "=>", scopes: ["source.perl", "punctuation.separator.key-value.perl"]
+
+
   describe "when a number tokenizes", ->
     it "highlights decimals", ->
       lines = grammar.tokenizeLines("""0
