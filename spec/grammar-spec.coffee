@@ -592,6 +592,14 @@ $asd\\n
 ;""")
       expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
 
+  describe "when a storage modifier tokenizes", ->
+    it "highlights it", ->
+      {tokens} = grammar.tokenizeLine("my our local state")
+      expect(tokens[0]).toEqual value: "my", scopes: ["source.perl", "storage.modifier.perl"]
+      expect(tokens[2]).toEqual value: "our", scopes: ["source.perl", "storage.modifier.perl"]
+      expect(tokens[4]).toEqual value: "local", scopes: ["source.perl", "storage.modifier.perl"]
+      expect(tokens[6]).toEqual value: "state", scopes: ["source.perl", "storage.modifier.perl"]
+
   describe "when an operator tokenizes", ->
     it "highlights assignement operators", ->
       {tokens} = grammar.tokenizeLine("1 = ||= //= += -= *= /= %= **= &= |= ^= &.= |.= ^.=")
