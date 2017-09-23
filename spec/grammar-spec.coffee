@@ -590,6 +590,120 @@ $asd\\n
 ;""")
       expect(lines[1][0]).toEqual value: "$asd\\n", scopes: ["source.perl", "string.unquoted.heredoc.quote.perl"]
 
+  describe "when an operator tokenizes", ->
+    it "highlights assignement operators", ->
+      {tokens} = grammar.tokenizeLine("1 = ||= //= += -= *= /= %= **= &= |= ^= &.= |.= ^.=")
+      expect(tokens[2]).toEqual value: "=", scopes: ["source.perl", "keyword.operator.assignement.perl"]
+      expect(tokens[4]).toEqual value: "||=", scopes: ["source.perl", "keyword.operator.assignement.conditional.perl"]
+      expect(tokens[6]).toEqual value: "//=", scopes: ["source.perl", "keyword.operator.assignement.conditional.perl"]
+      expect(tokens[8]).toEqual value: "+=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[10]).toEqual value: "-=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[12]).toEqual value: "*=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[14]).toEqual value: "/=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[16]).toEqual value: "%=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[18]).toEqual value: "**=", scopes: ["source.perl", "keyword.operator.assignement.compound.perl"]
+      expect(tokens[20]).toEqual value: "&=", scopes: ["source.perl", "keyword.operator.assignement.compound.bitwise.perl"]
+      expect(tokens[22]).toEqual value: "|=", scopes: ["source.perl", "keyword.operator.assignement.compound.bitwise.perl"]
+      expect(tokens[24]).toEqual value: "^=", scopes: ["source.perl", "keyword.operator.assignement.compound.bitwise.perl"]
+      expect(tokens[26]).toEqual value: "&.=", scopes: ["source.perl", "keyword.operator.assignement.compound.stringwise.perl"]
+      expect(tokens[28]).toEqual value: "|.=", scopes: ["source.perl", "keyword.operator.assignement.compound.stringwise.perl"]
+      expect(tokens[30]).toEqual value: "^.=", scopes: ["source.perl", "keyword.operator.assignement.compound.stringwise.perl"]
+
+    it "highlights arithmetic operators", ->
+      {tokens} = grammar.tokenizeLine("+ - * / % **")
+      expect(tokens[0]).toEqual value: "+", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+      expect(tokens[2]).toEqual value: "-", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+      expect(tokens[4]).toEqual value: "*", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+      expect(tokens[6]).toEqual value: "/", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+      expect(tokens[8]).toEqual value: "%", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+      expect(tokens[10]).toEqual value: "**", scopes: ["source.perl", "keyword.operator.arithmetic.perl"]
+
+    it "highlights increment/decrement operators", ->
+      {tokens} = grammar.tokenizeLine("++ --")
+      expect(tokens[0]).toEqual value: "++", scopes: ["source.perl", "keyword.operator.increment.perl"]
+      expect(tokens[2]).toEqual value: "--", scopes: ["source.perl", "keyword.operator.decrement.perl"]
+
+    it "highlights bitwise operators", ->
+      {tokens} = grammar.tokenizeLine("& | ^ ~ >> <<")
+      expect(tokens[0]).toEqual value: "&", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      expect(tokens[2]).toEqual value: "|", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      expect(tokens[4]).toEqual value: "^", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      expect(tokens[6]).toEqual value: "~", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      expect(tokens[8]).toEqual value: ">>", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+      expect(tokens[10]).toEqual value: "<<", scopes: ["source.perl", "keyword.operator.bitwise.perl"]
+
+    it "highlights stringwise operators", ->
+      {tokens} = grammar.tokenizeLine("&. |. ^. ~.")
+      expect(tokens[0]).toEqual value: "&.", scopes: ["source.perl", "keyword.operator.stringwise.perl"]
+      expect(tokens[2]).toEqual value: "|.", scopes: ["source.perl", "keyword.operator.stringwise.perl"]
+      expect(tokens[4]).toEqual value: "^.", scopes: ["source.perl", "keyword.operator.stringwise.perl"]
+      expect(tokens[6]).toEqual value: "~.", scopes: ["source.perl", "keyword.operator.stringwise.perl"]
+
+    it "highlights comparison operators", ->
+      {tokens} = grammar.tokenizeLine("1 == != < > <= >= =~ !~ ~~ <=>")
+      expect(tokens[2]).toEqual value: "==", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[4]).toEqual value: "!=", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[6]).toEqual value: "<", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[8]).toEqual value: ">", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[10]).toEqual value: "<=", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[12]).toEqual value: ">=", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[14]).toEqual value: "=~", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[16]).toEqual value: "!~", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[18]).toEqual value: "~~", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+      expect(tokens[20]).toEqual value: "<=>", scopes: ["source.perl", "keyword.operator.comparison.perl"]
+
+    it "highlights stringwise comparison operators", ->
+      {tokens} = grammar.tokenizeLine("eq ne lt gt le ge cmp")
+      expect(tokens[0]).toEqual value: "eq", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[2]).toEqual value: "ne", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[4]).toEqual value: "lt", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[6]).toEqual value: "gt", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[8]).toEqual value: "le", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[10]).toEqual value: "ge", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+      expect(tokens[12]).toEqual value: "cmp", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
+
+    it "highlights logical operators", ->
+      {tokens} = grammar.tokenizeLine("and or xor as not")
+      expect(tokens[0]).toEqual value: "and", scopes: ["source.perl", "keyword.operator.logical.perl"]
+      expect(tokens[2]).toEqual value: "or", scopes: ["source.perl", "keyword.operator.logical.perl"]
+      expect(tokens[4]).toEqual value: "xor", scopes: ["source.perl", "keyword.operator.logical.perl"]
+      expect(tokens[6]).toEqual value: "as", scopes: ["source.perl", "keyword.operator.logical.perl"]
+      expect(tokens[8]).toEqual value: "not", scopes: ["source.perl", "keyword.operator.logical.perl"]
+
+    it "highlights c-style logical operators", ->
+      {tokens} = grammar.tokenizeLine("&& ||")
+      expect(tokens[0]).toEqual value: "&&", scopes: ["source.perl", "keyword.operator.logical.c-style.perl"]
+      expect(tokens[2]).toEqual value: "||", scopes: ["source.perl", "keyword.operator.logical.c-style.perl"]
+
+    it "highlights defined-or logical operators", ->
+      {tokens} = grammar.tokenizeLine("$var // 3")
+      expect(tokens[3]).toEqual value: "//", scopes: ["source.perl", "keyword.operator.logical.defined-or.perl"]
+
+    it "highlights concatenation operators", ->
+      {tokens} = grammar.tokenizeLine("'x'.'y'")
+      expect(tokens[3]).toEqual value: ".", scopes: ["source.perl", "keyword.operator.concatenation.perl"]
+
+    it "highlights repetition operators", ->
+      {tokens} = grammar.tokenizeLine("'x' x 3")
+      expect(tokens[0]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.begin.perl"]
+      expect(tokens[1]).toEqual value: "x", scopes: ["source.perl", "string.quoted.single.perl"]
+      expect(tokens[2]).toEqual value: "'", scopes: ["source.perl", "string.quoted.single.perl", "punctuation.definition.string.end.perl"]
+      expect(tokens[4]).toEqual value: "x", scopes: ["source.perl", "keyword.operator.repetition.perl"]
+
+    it "highlights range operators", ->
+      {tokens} = grammar.tokenizeLine(".. ... 0..1 3...9")
+      expect(tokens[0]).toEqual value: "..", scopes: ["source.perl", "keyword.operator.range.perl"]
+      expect(tokens[2]).toEqual value: "...", scopes: ["source.perl", "keyword.operator.range.perl"]
+      expect(tokens[5]).toEqual value: "..", scopes: ["source.perl", "keyword.operator.range.perl"]
+      expect(tokens[9]).toEqual value: "...", scopes: ["source.perl", "keyword.operator.range.perl"]
+
+    it "highlights readline operators", ->
+      {tokens} = grammar.tokenizeLine("<> <$fh>")
+      expect(tokens[0]).toEqual value: "<", scopes: ["source.perl", "keyword.operator.readline.perl"]
+      expect(tokens[1]).toEqual value: ">", scopes: ["source.perl", "keyword.operator.readline.perl"]
+      expect(tokens[3]).toEqual value: "<", scopes: ["source.perl", "keyword.operator.readline.perl"]
+      expect(tokens[6]).toEqual value: ">", scopes: ["source.perl", "keyword.operator.readline.perl"]
+
   describe "when a number tokenizes", ->
     it "highlights decimals", ->
       lines = grammar.tokenizeLines("""0

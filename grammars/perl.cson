@@ -789,16 +789,7 @@
     'name': 'storage.modifier.perl'
   }
   {
-    'match': '(?<!\\w)\\-[rwx0RWXOezsfdlpSbctugkTBMAC]\\b'
-    'name': 'keyword.operator.filetest.perl'
-  }
-  {
-    'match': '\\b(and|or|xor|as|not)\\b'
-    'name': 'keyword.operator.logical.perl'
-  }
-  {
-    'match': '(<=>|=>|->)'
-    'name': 'keyword.operator.comparison.perl'
+    'include': '#operators'
   }
   {
     'begin': '(((<<) *"HTML"))(.*)\\n?'
@@ -1761,15 +1752,7 @@
     ]
   }
   {
-    'match': '\\b(x)\\s*(\\d+)\\b'
-    'captures':
-      '1':
-        'name': 'support.function.perl'
-      '2':
-        'name': 'entity.name.function.perl'
-  }
-  {
-    'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|cmp|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eq|eval|exec|exists|exp|fcntl|fileno|flock|fork|formline|ge|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|gt|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|le|length|link|listen|local|localtime|log|lstat|lt|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|ne|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|quotemeta|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|say|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y)\\b'
+    'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eval|exec|exists|exp|fcntl|fileno|flock|fork|formline|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|length|link|listen|local|localtime|log|lstat|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|quotemeta|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|say|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y)\\b'
     'name': 'support.function.perl'
   }
 ]
@@ -1987,6 +1970,105 @@
             'name': 'punctuation.delimiter.decimal.period.perl'
           '2':
             'name': 'punctuation.delimiter.decimal.period.perl'
+      }
+    ]
+  'operators':
+    'patterns': [
+      # Order is important here, e.g. == matches before =
+      {
+        'match': '(?<!\\w)\\-[rwx0RWXOezsfdlpSbctugkTBMAC]\\b'
+        'name': 'keyword.operator.filetest.perl'
+      }
+      {
+        'begin': '<(?!=)(?=\\S*>)'
+        'beginCaptures':
+          '0':
+            'name': 'keyword.operator.readline.perl'
+        'end': '>'
+        'endCaptures':
+          '0':
+            'name': 'keyword.operator.readline.perl'
+        'patterns': [
+          {
+            'include': '#variable'
+          }
+        ]
+      }
+      {
+        'match': '(?:\\/\\/|\\|\\|)='
+        'name': 'keyword.operator.assignement.conditional.perl'
+      }
+      {
+        'match': '[&|^]='
+        'name': 'keyword.operator.assignement.compound.bitwise.perl'
+      }
+      {
+        'match': '[&|^]\\.='
+        'name': 'keyword.operator.assignement.compound.stringwise.perl'
+      }
+      {
+        'match': '(?:\\*\\*|[-+*%\\/])='
+        'name': 'keyword.operator.assignement.compound.perl'
+      }
+      {
+        'match': '<=>|==|!=|<=|>=|=~|!~|~~|<(?!<)|>(?!>)'
+        'name': 'keyword.operator.comparison.perl'
+      }
+      {
+        'match': '\\b(eq|ne|lt|gt|le|ge|cmp)\\b'
+        'name': 'keyword.operator.comparison.stringwise.perl'
+      }
+      {
+        'match': '\\b(and|or|xor|as|not)\\b'
+        'name': 'keyword.operator.logical.perl'
+      }
+      {
+        'match': '&&|\\|\\|'
+        'name': 'keyword.operator.logical.c-style.perl'
+      }
+      {
+        'match': '\\/\\/'
+        'name': 'keyword.operator.logical.defined-or.perl'
+      }
+      {
+        'match': '\\+\\+'
+        'name': 'keyword.operator.increment.perl'
+      }
+      {
+        'match': '--'
+        'name': 'keyword.operator.decrement.perl'
+      }
+      {
+        'match': '\\*\\*|[-+*%\\/]'
+        'name': 'keyword.operator.arithmetic.perl'
+      }
+      {
+        'match': '[&|^~]\\.'
+        'name': 'keyword.operator.stringwise.perl'
+      }
+      {
+        'match': '[&|^~]|>>|<<(?!\\s*[^-+=.\\d\\$\\(\\s])'
+        'name': 'keyword.operator.bitwise.perl'
+      }
+      {
+        'match': '='
+        'name': 'keyword.operator.assignement.perl'
+      }
+      {
+        'match': '\\.{2,3}'
+        'name': 'keyword.operator.range.perl'
+      }
+      {
+        'match': '\\.'
+        'name': 'keyword.operator.concatenation.perl'
+      }
+      {
+        'match': 'x'
+        'name': 'keyword.operator.repetition.perl'
+      }
+      {
+        'match': '[?:]'
+        'name': 'keyword.operator.ternary.perl'
       }
     ]
   'pod':
