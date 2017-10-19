@@ -943,6 +943,75 @@ $asd\\n
       expect(tokens[5]).toEqual value: "#", scopes: ["source.perl", "comment.line.number-sign.perl", "punctuation.definition.comment.perl"]
       expect(tokens[6]).toEqual value: "this is my new class", scopes: ["source.perl", "comment.line.number-sign.perl"]
 
+  describe "when tokenising pragma directives", ->
+    it "highlights each component correctly", ->
+      lines = grammar.tokenizeLines """
+        use strict;
+        use warnings -verbose;
+        no autodie;
+        use open IN  => ":crlf", OUT => ":raw";
+        use open ":std";
+      """
+      expect(lines[0][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[0][2]).toEqual value: 'strict', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[0][3]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[1][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[1][2]).toEqual value: 'warnings', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[1][4]).toEqual value: '-', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.operator.arithmetic.perl']
+      expect(lines[1][5]).toEqual value: 'verbose', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[1][6]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[2][0]).toEqual value: 'no', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.no.perl']
+      expect(lines[2][2]).toEqual value: 'autodie', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[2][3]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[3][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[3][2]).toEqual value: 'open', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'support.function.perl']
+      expect(lines[3][4]).toEqual value: 'IN', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.key.perl']
+      expect(lines[3][6]).toEqual value: '=>', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'punctuation.separator.key-value.perl']
+      expect(lines[3][8]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.begin.perl']
+      expect(lines[3][9]).toEqual value: ':crlf', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl']
+      expect(lines[3][10]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.end.perl']
+      expect(lines[3][11]).toEqual value: ',', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'punctuation.separator.comma.perl']
+      expect(lines[3][13]).toEqual value: 'OUT', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.key.perl']
+      expect(lines[3][15]).toEqual value: '=>', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'punctuation.separator.key-value.perl']
+      expect(lines[3][17]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.begin.perl']
+      expect(lines[3][18]).toEqual value: ':raw', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl']
+      expect(lines[3][19]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.end.perl']
+      expect(lines[3][20]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[4][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[4][2]).toEqual value: 'open', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'support.function.perl']
+      expect(lines[4][4]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.begin.perl']
+      expect(lines[4][5]).toEqual value: ':std', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl']
+      expect(lines[4][6]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.end.perl']
+      expect(lines[4][7]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+
+   it "flags repeated or conflicting keywords", ->
+      lines = grammar.tokenizeLines """
+        no use warnings;
+        no no "no use";
+        use use "use warnings";
+        use no warnings;
+      """
+      expect(lines[0][0]).toEqual value: 'no', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.no.perl']
+      expect(lines[0][2]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'invalid.illegal.syntax.pragma.perl']
+      expect(lines[0][4]).toEqual value: 'warnings', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[0][5]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[1][0]).toEqual value: 'no', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.no.perl']
+      expect(lines[1][2]).toEqual value: 'no', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'invalid.illegal.syntax.pragma.perl']
+      expect(lines[1][4]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.begin.perl']
+      expect(lines[1][5]).toEqual value: 'no use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl']
+      expect(lines[1][6]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.end.perl']
+      expect(lines[1][7]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[2][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[2][2]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'invalid.illegal.syntax.pragma.perl']
+      expect(lines[2][4]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.begin.perl']
+      expect(lines[2][5]).toEqual value: 'use warnings', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl']
+      expect(lines[2][6]).toEqual value: '"', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'string.quoted.double.perl', 'punctuation.definition.string.end.perl']
+      expect(lines[2][7]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[3][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[3][2]).toEqual value: 'no', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'invalid.illegal.syntax.pragma.perl']
+      expect(lines[3][4]).toEqual value: 'warnings', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[3][5]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+
   describe "when tokenising Pod markup", ->
     it "highlights Pod commands", ->
       lines = grammar.tokenizeLines """
