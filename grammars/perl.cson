@@ -7,7 +7,6 @@
   'pod'
   'psgi'
   't'
-  'vcl'
 ]
 'firstLineMatch': '''(?x)
   # Hashbang

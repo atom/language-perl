@@ -5,6 +5,7 @@
   'pl6'
   'pm6'
   'nqp'
+  'pod6'
 ]
 'firstLineMatch': '''(?x)
   # Hashbang
