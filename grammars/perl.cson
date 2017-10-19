@@ -1950,6 +1950,10 @@
   'numbers':
     'patterns': [
       {
+        'match': '\\d+(_\\d+)+'
+        'name': 'constant.numeric.decimal.with-thousand-separators.perl'
+      }
+      {
         'match': '(?:\\b\\d+(?:(\\.)\\d*)?|(?<!\\.)\\B(\\.)\\d+)[eE](?:[-+\\d]\\d*(?:(\\.)\\d*)?)?'
         'captures':
           '0':
@@ -1966,7 +1970,7 @@
         'name': 'constant.numeric.hexadecimal.perl'
       }
       {
-        'match': '\\b0[bB][01]*'
+        'match': '\\b0[bB][01]*(?:_[01]+)*'
         'name': 'constant.numeric.binary.perl'
       }
       {

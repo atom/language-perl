@@ -880,6 +880,79 @@ $asd\\n
       expect(lines[4][3]).toEqual value: ".", scopes: ["source.perl", "keyword.operator.concatenation.perl"]
       expect(lines[4][4]).toEqual value: "0", scopes: ["source.perl", "constant.numeric.decimal.perl"]
 
+  describe "numbers with thousand separators", ->
+    it "matches them as a single token", ->
+      lines = grammar.tokenizeLines """
+        my $n = 12345;
+        my $n = 12345.67;
+        my $n = -.02e+23;
+        my $n = 6.02e23;
+        my $n = 4_294_967_296;
+        my $n = 0377;
+        my $n = 0X00A0;
+        my $n = 0xffff;
+        my $n = 0b1100_0000;
+      """
+      expect(lines[0][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[0][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[0][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[0][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[0][7]).toEqual value: '12345', scopes: ['source.perl', 'constant.numeric.decimal.perl']
+      expect(lines[0][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[1][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[1][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[1][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[1][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[1][7]).toEqual value: '12345', scopes: ['source.perl', 'constant.numeric.decimal.perl']
+      expect(lines[1][8]).toEqual value: '.', scopes: ['source.perl', 'constant.numeric.decimal.perl', 'punctuation.delimiter.decimal.period.perl']
+      expect(lines[1][9]).toEqual value: '67', scopes: ['source.perl', 'constant.numeric.decimal.perl']
+      expect(lines[1][10]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[2][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[2][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[2][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[2][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[2][7]).toEqual value: '-', scopes: ['source.perl', 'keyword.operator.arithmetic.perl']
+      expect(lines[2][8]).toEqual value: '.', scopes: ['source.perl', 'constant.numeric.exponential.perl', 'punctuation.delimiter.decimal.period.perl']
+      expect(lines[2][9]).toEqual value: '02e+23', scopes: ['source.perl', 'constant.numeric.exponential.perl']
+      expect(lines[2][10]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[3][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[3][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[3][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[3][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[3][7]).toEqual value: '6', scopes: ['source.perl', 'constant.numeric.exponential.perl']
+      expect(lines[3][8]).toEqual value: '.', scopes: ['source.perl', 'constant.numeric.exponential.perl', 'punctuation.delimiter.decimal.period.perl']
+      expect(lines[3][9]).toEqual value: '02e23', scopes: ['source.perl', 'constant.numeric.exponential.perl']
+      expect(lines[3][10]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[4][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[4][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[4][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[4][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[4][7]).toEqual value: '4_294_967_296', scopes: ['source.perl', 'constant.numeric.decimal.with-thousand-separators.perl']
+      expect(lines[4][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[5][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[5][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[5][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[5][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[5][7]).toEqual value: '0377', scopes: ['source.perl', 'constant.numeric.decimal.perl']
+      expect(lines[5][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[6][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[6][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[6][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[6][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[6][7]).toEqual value: '0X00A0', scopes: ['source.perl', 'constant.numeric.hexadecimal.perl']
+      expect(lines[6][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[7][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[7][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[7][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[7][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[7][7]).toEqual value: '0xffff', scopes: ['source.perl', 'constant.numeric.hexadecimal.perl']
+      expect(lines[7][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[8][0]).toEqual value: 'my', scopes: ['source.perl', 'storage.modifier.perl']
+      expect(lines[8][2]).toEqual value: '$', scopes: ['source.perl', 'variable.other.readwrite.global.perl', 'punctuation.definition.variable.perl']
+      expect(lines[8][3]).toEqual value: 'n', scopes: ['source.perl', 'variable.other.readwrite.global.perl']
+      expect(lines[8][5]).toEqual value: '=', scopes: ['source.perl', 'keyword.operator.assignement.perl']
+      expect(lines[8][7]).toEqual value: '0b1100_0000', scopes: ['source.perl', 'constant.numeric.binary.perl']
+      expect(lines[8][8]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
 
   describe "when a hash variable tokenizes", ->
     it "does not highlight whitespace beside a key as a constant", ->
