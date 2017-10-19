@@ -1,6 +1,6 @@
 {
   "name": "language-perl",
-  "version": "0.37.0",
+  "version": "0.38.0",
   "description": "Perl language support in Atom",
   "engines": {
     "atom": "*",
