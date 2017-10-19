@@ -47,6 +47,9 @@
     ]
   }
   {
+    'include': "#sub"
+  }
+  {
     'include': '#variable'
   }
   {
@@ -72,13 +75,13 @@
         'name': 'keyword.control.regexp-option.perl'
     'patterns': [
       {
-        'begin': '(qr)\\s*\\{'
+        'begin': '(qr)\\s*{'
         'captures':
           '0':
             'name': 'punctuation.definition.string.perl'
           '1':
             'name': 'support.function.perl'
-        'end': '\\}'
+        'end': '}'
         'name': 'string.regexp.compile.nested_braces.perl'
         'patterns': [
           {
@@ -719,15 +722,7 @@
     'name': 'meta.class.perl'
   }
   {
-    'captures':
-      '1':
-        'name': 'storage.type.sub.perl'
-      '2':
-        'name': 'entity.name.function.perl'
-      '3':
-        'name': 'storage.type.method.perl'
-    'match': '\\b(sub)(?:\\s+([-a-zA-Z0-9_]+))?\\s*(?:\\([\\$\\@\\*;]*\\))?[^\\w\\{]'
-    'name': 'meta.function.perl'
+    'include: "#sub'
   }
   {
     'captures':
@@ -1763,6 +1758,63 @@
     'match': '\\b(ARGV|DATA|ENV|SIG|STDERR|STDIN|STDOUT|atan2|bind|binmode|bless|caller|chdir|chmod|chomp|chop|chown|chr|chroot|close|closedir|connect|cos|crypt|dbmclose|dbmopen|defined|delete|dump|each|endgrent|endhostent|endnetent|endprotoent|endpwent|endservent|eof|eval|exec|exists|exp|fcntl|fileno|flock|fork|formline|getc|getgrent|getgrgid|getgrnam|gethostbyaddr|gethostbyname|gethostent|getlogin|getnetbyaddr|getnetbyname|getnetent|getpeername|getpgrp|getppid|getpriority|getprotobyname|getprotobynumber|getprotoent|getpwent|getpwnam|getpwuid|getservbyname|getservbyport|getservent|getsockname|getsockopt|glob|gmtime|grep|hex|import|index|int|ioctl|join|keys|kill|lc|lcfirst|length|link|listen|local|localtime|log|lstat|m|map|mkdir|msgctl|msgget|msgrcv|msgsnd|no|oct|open|opendir|ord|pack|pipe|pop|pos|print|printf|push|quotemeta|rand|read|readdir|readlink|recv|ref|rename|reset|reverse|rewinddir|rindex|rmdir|s|say|scalar|seek|seekdir|semctl|semget|semop|send|setgrent|sethostent|setnetent|setpgrp|setpriority|setprotoent|setpwent|setservent|setsockopt|shift|shmctl|shmget|shmread|shmwrite|shutdown|sin|sleep|socket|socketpair|sort|splice|split|sprintf|sqrt|srand|stat|study|substr|symlink|syscall|sysopen|sysread|system|syswrite|tell|telldir|tie|tied|time|times|tr|truncate|uc|ucfirst|umask|undef|unlink|unpack|unshift|untie|utime|values|vec|waitpid|wantarray|warn|write|y)\\b'
     'name': 'support.function.perl'
   }
+  {
+    'begin': '{'
+    'end': '}'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.brace.curly.bracket.begin.perl'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.brace.curly.bracket.end.perl'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
+    'begin': '\\['
+    'end': '\\]'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.square.bracket.begin.perl'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.square.bracket.end.perl'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
+    'begin': '\\('
+    'end': '\\)'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.parenthesis.round.bracket.begin.perl'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.parenthesis.round.bracket.end.perl'
+    'patterns': [
+      {
+        'include': '$self'
+      }
+    ]
+  }
+  {
+    'match': '}'
+    'name': 'punctuation.unmatched.brace.curly.bracket.end.perl'
+  }
+  {
+    'match': '\\]'
+    'name': 'punctuation.unmatched.square.bracket.end.perl'
+  }
+  {
+    'match': '\\)'
+    'name': 'punctuation.unmatched.parenthesis.round.bracket.end.perl'
+  }
 ]
 'repository':
   'escaped_char':
@@ -2244,6 +2296,33 @@
         'name': 'meta.diagnostics.pragma.perl'
       }
     ]
+  'sub':
+    'match': '''(?x) (?<!->)
+      \\b (sub) \\b
+      (?:
+        \\s+
+        ([-\\w]+)?
+        (
+          (\\()
+          ([$@*;]*)
+          (\\))
+        )?
+      )?
+    '''
+    'captures':
+      '1':
+        'name': 'storage.type.function.sub.perl'
+      '2':
+        'name': 'entity.name.function.perl'
+      '3':
+        'name': 'meta.function.signature.perl'
+      '4':
+        'name': 'punctuation.section.signature.begin.bracket.curly.perl'
+      '5':
+        'name': 'storage.type.signature.method.perl'
+      '6':
+        'name': 'punctuation.section.signature.end.bracket.curly.perl'
+    'name': 'meta.function.perl'
   'variable':
     'patterns': [
       {
