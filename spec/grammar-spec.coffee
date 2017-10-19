@@ -600,6 +600,19 @@ $asd\\n
       expect(tokens[4]).toEqual value: "local", scopes: ["source.perl", "storage.modifier.perl"]
       expect(tokens[6]).toEqual value: "state", scopes: ["source.perl", "storage.modifier.perl"]
 
+   describe 'when encountering `v` followed by dot-delimited digits', ->
+    it 'tokenises it as a version literal', ->
+      lines = grammar.tokenizeLines """
+      use v5.14
+      use v5.24.1
+      """
+      expect(lines[0][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[0][2]).toEqual value: 'v5.14', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.version.literal.perl']
+      expect(lines[0][3]).toEqual value: '', scopes: ['source.perl', 'meta.preprocessor.pragma.perl']
+      expect(lines[1][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
+      expect(lines[1][2]).toEqual value: 'v5.24.1', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.version.literal.perl']
+      expect(lines[1][3]).toEqual value: '', scopes: ['source.perl', 'meta.preprocessor.pragma.perl']
+
   describe "when an operator tokenizes", ->
     it "highlights assignement operators", ->
       {tokens} = grammar.tokenizeLine("1 = ||= //= += -= *= /= %= **= &= |= ^= &.= |.= ^.=")

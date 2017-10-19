@@ -50,6 +50,9 @@
     'include': '#variable'
   }
   {
+    'include': '#version_literal'
+  }
+  {
     'include': '#numbers'
   }
   {
@@ -2208,6 +2211,9 @@
                 'name': 'invalid.illegal.syntax.pragma.perl'
           }
           {
+            'include': 'version_literal'
+          }
+          {
             'include': '$self'
           }
           {
@@ -2312,3 +2318,8 @@
         'name': 'variable.other.readwrite.global.special.perl'
       }
     ]
+  'version_literal':
+    'match': '(?<!->)\\b\\s*(v[0-9]+(\\.[0-9]+)+)'
+    'captures':
+      '1':
+        'name': 'constant.other.version.literal.perl'
