@@ -1012,6 +1012,18 @@ $asd\\n
       expect(lines[3][4]).toEqual value: 'warnings', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.language.pragma.module.perl']
       expect(lines[3][5]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
 
+    it "highlights `enable diagnostics` as a pragma directive", ->
+      lines = grammar.tokenizeLines """
+        enable diagnostics;
+        disable diagnostics;
+      """
+      expect(lines[0][0]).toEqual value: 'enable', scopes: ['source.perl', 'meta.diagnostics.pragma.perl', 'keyword.control.diagnostics.enable.perl']
+      expect(lines[0][2]).toEqual value: 'diagnostics', scopes: ['source.perl', 'meta.diagnostics.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[0][3]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[1][0]).toEqual value: 'disable', scopes: ['source.perl', 'meta.diagnostics.pragma.perl', 'keyword.control.diagnostics.disable.perl']
+      expect(lines[1][2]).toEqual value: 'diagnostics', scopes: ['source.perl', 'meta.diagnostics.pragma.perl', 'constant.language.pragma.module.perl']
+      expect(lines[1][3]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+
   describe "when tokenising Pod markup", ->
     it "highlights Pod commands", ->
       lines = grammar.tokenizeLines """

@@ -2192,29 +2192,42 @@
       }
     ]
   'pragmas':
-    'begin': '(?<!->)\\b(no|use)(?=$|#|\\s)'
-    'end': '\\s*(?=\\}|$|;|#)'
-    'name': 'meta.preprocessor.pragma.perl'
-    'beginCaptures':
-      '1':
-        'name': 'keyword.control.directive.pragma.$1.perl'
     'patterns': [
       {
-        'match': '\\G\\s+(no|use)(?=\\s|;|#)'
+        'begin': '(?<!->)\\b(no|use)(?=$|#|\\s)'
+        'end': '\\s*(?=\\}|$|;|#)'
+        'name': 'meta.preprocessor.pragma.perl'
+        'beginCaptures':
+          '1':
+            'name': 'keyword.control.directive.pragma.$1.perl'
+        'patterns': [
+          {
+            'match': '\\G\\s+(no|use)(?=\\s|;|#)'
+            'captures':
+              '1':
+                'name': 'invalid.illegal.syntax.pragma.perl'
+          }
+          {
+            'include': '$self'
+          }
+          {
+            'match': '-\\w+'
+            'name': 'keyword.operator.pragma.flag.perl'
+          }
+          {
+            'match': '\\w+'
+            'name': 'constant.language.pragma.module.perl'
+          }
+        ]
+      }
+      {
+        'match': '(?<!->)\\b(enable|disable)\\s+(diagnostics)(?=$|;|#|\\s)'
         'captures':
           '1':
-            'name': 'invalid.illegal.syntax.pragma.perl'
-      }
-      {
-        'include': '$self'
-      }
-      {
-        'match': '-\\w+'
-        'name': 'keyword.operator.pragma.flag.perl'
-      }
-      {
-        'match': '\\w+'
-        'name': 'constant.language.pragma.module.perl'
+            'name': 'keyword.control.diagnostics.$1.perl'
+          '2':
+            'name': 'constant.language.pragma.module.perl'
+        'name': 'meta.diagnostics.pragma.perl'
       }
     ]
   'variable':
