@@ -287,3 +287,7 @@ describe "Perl 6 grammar", ->
       """
       for line in invalid.split /\n/
         expect(grammar.firstLineRegex.scanner.findNextMatchSync(line)).toBeNull()
+
+# Local variables:
+# mode: CoffeeScript
+# End:
