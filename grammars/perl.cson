@@ -2007,6 +2007,10 @@
         ]
       }
       {
+        'match': '(?<=\\{)\\s*(\\.{3})\\s*(?=\\})'
+        'name': 'keyword.operator.ellipsis.placeholder.perl'
+      }
+      {
         'match': '(?:\\/\\/|\\|\\|)='
         'name': 'keyword.operator.assignement.conditional.perl'
       }

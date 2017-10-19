@@ -685,6 +685,32 @@ $asd\\n
       expect(tokens[10]).toEqual value: "ge", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
       expect(tokens[12]).toEqual value: "cmp", scopes: ["source.perl", "keyword.operator.comparison.stringwise.perl"]
 
+    it "highlights ellipsis statements", ->
+      lines = grammar.tokenizeLines """
+        { ... }
+        sub foo { ... }
+        ...;
+        eval { ... };
+      """
+      expect(lines[0][1]).toEqual value: ' ... ', scopes: ['source.perl', 'keyword.operator.ellipsis.placeholder.perl']
+      expect(lines[1][0]).toEqual value: 'sub', scopes: ['source.perl', 'meta.function.perl', 'storage.type.sub.perl']
+      expect(lines[1][2]).toEqual value: 'foo', scopes: ['source.perl', 'meta.function.perl', 'entity.name.function.perl']
+      expect(lines[1][5]).toEqual value: ' ... ', scopes: ['source.perl', 'keyword.operator.ellipsis.placeholder.perl']
+      expect(lines[2][0]).toEqual value: '...', scopes: ['source.perl', 'keyword.operator.range.perl']
+      expect(lines[2][1]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+      expect(lines[3][0]).toEqual value: 'eval', scopes: ['source.perl', 'keyword.control.perl']
+      expect(lines[3][2]).toEqual value: ' ... ', scopes: ['source.perl', 'keyword.operator.ellipsis.placeholder.perl']
+      expect(lines[3][4]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+
+      lines = grammar.tokenizeLines """
+      sub someMethod {
+        my $self = shift;
+        ...;
+      }
+      """
+      expect(lines[2][1]).toEqual value: '...', scopes: ['source.perl', 'keyword.operator.range.perl']
+      expect(lines[2][2]).toEqual value: ';', scopes: ['source.perl', 'punctuation.terminator.semicolon.perl']
+
     it "highlights logical operators", ->
       {tokens} = grammar.tokenizeLine("and or xor as not")
       expect(tokens[0]).toEqual value: "and", scopes: ["source.perl", "keyword.operator.logical.perl"]
