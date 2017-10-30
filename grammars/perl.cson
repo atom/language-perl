@@ -2258,7 +2258,7 @@
     'patterns': [
       {
         'begin': '(?<!->)\\b(no|use)(?=$|#|\\s)'
-        'end': '\\s*(?=\\}|$|;|#)'
+        'end': '(?=}|$|;|#)'
         'name': 'meta.preprocessor.pragma.perl'
         'beginCaptures':
           '1':

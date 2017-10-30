@@ -687,10 +687,8 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       """
       expect(lines[0][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
       expect(lines[0][2]).toEqual value: 'v5.14', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.version.literal.perl']
-      expect(lines[0][3]).toEqual value: '', scopes: ['source.perl', 'meta.preprocessor.pragma.perl']
       expect(lines[1][0]).toEqual value: 'use', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'keyword.control.directive.pragma.use.perl']
       expect(lines[1][2]).toEqual value: 'v5.24.1', scopes: ['source.perl', 'meta.preprocessor.pragma.perl', 'constant.other.version.literal.perl']
-      expect(lines[1][3]).toEqual value: '', scopes: ['source.perl', 'meta.preprocessor.pragma.perl']
 
   describe "when an operator tokenizes", ->
     it "highlights assignement operators", ->
@@ -1181,7 +1179,7 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(lines[3][1]).toEqual value: '}', scopes: ['source.perl', 'punctuation.section.brace.curly.bracket.end.perl']
       expect(lines[4][0]).toEqual value: '  ', scopes: ['source.perl' ]
       expect(lines[5][0]).toEqual value: '}', scopes: ['source.perl', 'punctuation.section.brace.curly.bracket.end.perl']
-  
+
       {tokens} = grammar.tokenizeLine('(lisperlerlang % ( a ( b ( c () 1 ) 2 ) 3 ) ) %)')
       expect(tokens[0]).toEqual value: '(', scopes: ['source.perl', 'punctuation.section.parenthesis.round.bracket.begin.perl']
       expect(tokens[1]).toEqual value: 'lisperlerlang ', scopes: ['source.perl']
@@ -1203,7 +1201,7 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(tokens[25]).toEqual value: ')', scopes: ['source.perl', 'punctuation.section.parenthesis.round.bracket.end.perl']
       expect(tokens[27]).toEqual value: '%', scopes: ['source.perl', 'keyword.operator.arithmetic.perl']
       expect(tokens[28]).toEqual value: ')', scopes: ['source.perl', 'punctuation.unmatched.parenthesis.round.bracket.end.perl']
-  
+
       {tokens} = grammar.tokenizeLine('sub name [ a [ b [ c [] 1 ] 2 ] 3 ] ]')
       expect(tokens[0]).toEqual value: 'sub', scopes: ['source.perl', 'meta.function.perl', 'storage.type.function.sub.perl']
       expect(tokens[2]).toEqual value: 'name', scopes: ['source.perl', 'meta.function.perl', 'entity.name.function.perl']
@@ -1222,7 +1220,7 @@ Assigned to: @<<<<<<<<<<<<<<<<<<<<<< ^<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       expect(tokens[21]).toEqual value: '3', scopes: ['source.perl', 'constant.numeric.decimal.perl']
       expect(tokens[23]).toEqual value: ']', scopes: ['source.perl', 'punctuation.section.square.bracket.end.perl']
       expect(tokens[25]).toEqual value: ']', scopes: ['source.perl', 'punctuation.unmatched.square.bracket.end.perl']
-  
+
     it "tokenises unbalanced brackets", ->
       lines = grammar.tokenizeLines """
         BEGIN:
