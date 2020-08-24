@@ -2271,7 +2271,7 @@
                 'name': 'invalid.illegal.syntax.pragma.perl'
           }
           {
-            'include': 'version_literal'
+            'include': '#version_literal'
           }
           {
             'include': '$self'
