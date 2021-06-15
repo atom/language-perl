@@ -1,7 +1,5 @@
 # Perl language support in Atom
-[![macOS Build Status](https://travis-ci.org/atom/language-perl.svg?branch=master)](https://travis-ci.org/atom/language-perl)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/dfs9inkkg40hchf8/branch/master?svg=true)](https://ci.appveyor.com/project/Atom/language-perl/branch/master)
-[![Dependency Status](https://david-dm.org/atom/language-perl.svg)](https://david-dm.org/atom/language-perl)
+[![CI](https://github.com/atom/language-perl/actions/workflows/ci.yml/badge.svg)](https://github.com/atom/language-perl/actions/workflows/ci.yml)
 
 Adds syntax highlighting and snippets to Perl files in Atom.
 
